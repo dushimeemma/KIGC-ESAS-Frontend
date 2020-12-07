@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Login/> Should render with no errors 1`] = `
+<Row
+  className="main-height"
+  tag="div"
+  widths={
+    Array [
+      "xs",
+      "sm",
+      "md",
+      "lg",
+      "xl",
+    ]
+  }
+>
+  <Image />
+  <Col
+    className="back-color border p-2"
+    md="6"
+    tag="div"
+    widths={
+      Array [
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+      ]
+    }
+  >
+    <h3
+      className="text-center"
+    >
+      Login To 
+      <br />
+      KIGC-ESAS
+    </h3>
+    <hr />
+    <Form
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <FormGroup
+        tag="div"
+      >
+        <Label
+          tag="label"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          Email
+        </Label>
+        <Input
+          className="border-success"
+          name="email"
+          onChange={[Function]}
+          placeholder="eg: dushimeemma@gmail.com"
+          type="text"
+          value=""
+        />
+      </FormGroup>
+      <FormGroup
+        tag="div"
+      >
+        <Label
+          tag="label"
+          widths={
+            Array [
+              "xs",
+              "sm",
+              "md",
+              "lg",
+              "xl",
+            ]
+          }
+        >
+          Password
+        </Label>
+        <Input
+          className="border-success"
+          name="password"
+          onChange={[Function]}
+          placeholder="eg: Password123"
+          type="password"
+          value=""
+        />
+      </FormGroup>
+      <Button
+        className="btn btn-block"
+        color="secondary"
+        tag="button"
+      >
+        Login
+      </Button>
+    </Form>
+  </Col>
+</Row>
+`;

@@ -1,0 +1,47 @@
+.text-color {
+  color: #000;
+}
+.text-color:hover {
+  color: #000;
+}
+.back-color {
+  color: #000;
+  background: #c5bfbf;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+}
+.back-color:hover {
+  color: #000;
+  background: #c5bfbf;
+}
+.background {
+  background: #c5bfbf;
+  border: 0;
+}
+.cursor {
+  cursor: pointer;
+}
+.border {
+  border-radius: 0.5em;
+}
+.main-height {
+  min-height: 84vh;
+}
+.border-danger {
+  border: 1px solid #d9534f;
+}
+.border-success {
+  border: 1px solid #5cb85c;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.width-sidebar {
+  width: 100%;
+}
+
+.cards-bg {
+  background: #c5bfbf;
+  cursor: pointer;
+}

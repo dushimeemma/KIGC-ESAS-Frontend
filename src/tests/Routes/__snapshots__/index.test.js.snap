@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Routes/> Should render different routes 1`] = `
+<BrowserRouter>
+  <Header />
+  <Container
+    tag="div"
+  >
+    <Switch>
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/register"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/login"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/dashboard"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/roles"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/role/:slug"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/students"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/student/:slug"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/attendance"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/attendance/record/:slug"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/finance"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/finance/record/:slug"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/course"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/course/record/:slug"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/seat"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/seat/record/:slug"
+      />
+    </Switch>
+  </Container>
+  <Footer />
+</BrowserRouter>
+`;

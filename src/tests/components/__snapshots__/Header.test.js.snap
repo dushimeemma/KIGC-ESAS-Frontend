@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Navs/> Should logout user 1`] = `
+<Navbar
+  className="back-color mb-2"
+  expand={false}
+  tag="nav"
+>
+  <NavbarBrand
+    className="text-color"
+    href="/"
+    tag="a"
+  >
+    KIGC | ESAS
+  </NavbarBrand>
+  <Nav
+    className="ml-auto"
+    tag="ul"
+    vertical={false}
+  >
+    <NavItem
+      tag="li"
+    >
+      <NavLink
+        className="text-color"
+        href="/dashboard"
+        tag="a"
+      >
+        Welcome 
+        <strong
+          className="text-capitalize"
+        >
+          dushime emmanuel
+        </strong>
+      </NavLink>
+    </NavItem>
+    <NavItem
+      tag="li"
+    >
+      <NavLink
+        className="text-color cursor-pointer"
+        id="logout"
+        onClick={[Function]}
+        tag="a"
+      >
+        Logout
+      </NavLink>
+    </NavItem>
+  </Nav>
+</Navbar>
+`;
+
+exports[`<Navs/> Should render navigation 1`] = `
+<Navbar
+  className="back-color mb-2"
+  expand={false}
+  tag="nav"
+>
+  <NavbarBrand
+    className="text-color"
+    href="/"
+    tag="a"
+  >
+    KIGC | ESAS
+  </NavbarBrand>
+  <Nav
+    className="ml-auto"
+    tag="ul"
+    vertical={false}
+  >
+    <NavItem
+      tag="li"
+    >
+      <NavLink
+        className="text-color"
+        href="/login"
+        tag="a"
+      >
+        Login
+      </NavLink>
+    </NavItem>
+    <NavItem
+      tag="li"
+    >
+      <NavLink
+        className="text-color"
+        href="/register"
+        tag="a"
+      >
+        Register
+      </NavLink>
+    </NavItem>
+  </Nav>
+</Navbar>
+`;

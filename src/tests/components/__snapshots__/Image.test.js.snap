@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HomeImage/> Should render navigation 1`] = `
+<img
+  alt="HomePage"
+  className="col-md-6"
+  src=""
+/>
+`;

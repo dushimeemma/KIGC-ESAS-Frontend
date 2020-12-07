@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Footer/> Should render footer without error 1`] = `
+<div
+  className="text-center back-color cursor mt-2"
+>
+  © 
+  2020
+  . KIGC | ESAS
+</div>
+`;
