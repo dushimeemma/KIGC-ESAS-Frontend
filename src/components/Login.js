@@ -78,7 +78,8 @@ const Login = (props) => {
   return (
     <Row className='main-height'>
       <Image />
-      <Col md='6' className='back-color border p-2'>
+      <Col className="">
+        <div className=" border p-2 aside back-color">
         <h3 className='text-center'>
           Login To <br />
           KIGC-ESAS
@@ -137,6 +138,7 @@ const Login = (props) => {
           </FormGroup>
           <Button className='btn btn-block'>Login</Button>
         </Form>
+        </div>
       </Col>
     </Row>
   );

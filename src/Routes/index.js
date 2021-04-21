@@ -25,7 +25,7 @@ const Routes = () => {
   return (
     <Router>
       <Navs />
-      <Container>
+      <Container fluid>
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route exact path='/register' component={Signup} />
