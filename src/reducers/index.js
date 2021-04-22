@@ -4,6 +4,7 @@ import errors from './errors';
 import users from './users';
 import roles from './roles';
 import students from './students';
+import rooms from './room';
 import attendance from './attendance';
 import finance from './finance';
 import course from './course';
@@ -15,6 +16,7 @@ export default combineReducers({
   users,
   roles,
   students,
+  rooms,
   attendance,
   finance,
   course,
