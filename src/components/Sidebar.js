@@ -6,6 +6,11 @@ const Sidebar = () => {
     <Col md='3' className='back-color'>
       <ListGroup>
         <ListGroupItem className='back-color'>
+          <NavLink href='/default-dashboard' className='back-color'>
+            Dashboard
+          </NavLink>
+        </ListGroupItem>
+        <ListGroupItem className='back-color'>
           <NavLink href='/roles' className='back-color'>
             Role
           </NavLink>
@@ -28,6 +33,11 @@ const Sidebar = () => {
         <ListGroupItem className='back-color'>
           <NavLink href='/course' className='back-color'>
             Course
+          </NavLink>
+        </ListGroupItem>
+        <ListGroupItem className='back-color'>
+          <NavLink href='/room' className='back-color'>
+            Room
           </NavLink>
         </ListGroupItem>
         <ListGroupItem className='back-color'>

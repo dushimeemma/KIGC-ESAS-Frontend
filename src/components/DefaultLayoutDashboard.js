@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Container,
   Row,
@@ -13,51 +13,53 @@ import {
   Label,
   Input,
   Alert,
-} from 'reactstrap';
-import { useDispatch, useSelector } from 'react-redux';
+} from "reactstrap";
+import { useDispatch, useSelector } from "react-redux";
 
-import Sidebar from './Sidebar';
-import Card from './Card';
-import { getUsers } from '../actions/users';
-import { getRoles, assignRole } from '../actions/roles';
+import Sidebar from "./Sidebar";
+import Card from "./Card";
+import { getUsers } from "../actions/users";
+import { getRooms } from "../actions/room";
+import { getRoles, assignRole } from "../actions/roles";
 
 const DefaultDashboard = (props) => {
-  if (!localStorage.getItem('token')) {
-    props.history.push('/');
+  if (!localStorage.getItem("token")) {
+    props.history.push("/");
   }
-  const username = localStorage.getItem('username');
+  const username = localStorage.getItem("username");
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(getUsers());
-  }, []);
-  React.useEffect(() => {
     dispatch(getRoles());
+    dispatch(getRooms());
   }, []);
+  React.useEffect(() => {}, []);
   const users = useSelector((state) => state.users.users);
   const roles = useSelector((state) => state.roles.roles);
   const msg = useSelector((state) => state.roles.msg);
+  const { rooms } = useSelector((state) => state.rooms);
   const backErrors = useSelector(
     (state) => state.errors.msg.error || state.errors.msg.msg
   );
   const checkSuccess = useSelector((state) => state.roles.assignSuccess);
-  const [backErrs, setBackErrs] = React.useState('');
+  const [backErrs, setBackErrs] = React.useState("");
   const [modal, setModal] = React.useState(false);
   const [state, setState] = React.useState({
-    role: '',
-    email: '',
+    role: "",
+    email: "",
   });
   const [isSubmitting, setIsSubmmitting] = React.useState(false);
-  const [backMsg, setBackMsg] = React.useState('');
+  const [backMsg, setBackMsg] = React.useState("");
   React.useEffect(() => {
     setBackErrs(backErrors);
     setTimeout(() => {
-      setBackErrs('');
+      setBackErrs("");
     }, 5000);
   }, [backErrors]);
   React.useEffect(() => {
     setBackMsg(msg);
     setTimeout(() => {
-      setBackMsg('');
+      setBackMsg("");
     }, 5000);
   }, [msg]);
 
@@ -90,51 +92,51 @@ const DefaultDashboard = (props) => {
 
   const HandleClickUsers = () => {
     setTimeout(() => {
-      props.history.push('/dashboard');
+      props.history.push("/dashboard");
       window.location.reload(false);
     }, 3000);
   };
 
   const HandleClickStudents = () => {
     setTimeout(() => {
-      props.history.push('/students');
+      props.history.push("/students");
       window.location.reload(false);
     }, 3000);
   };
 
-  const HandleClickSeats = () => {
+  const HandleClickRooms = () => {
     setTimeout(() => {
-      props.history.push('/seat');
+      props.history.push("/room");
       window.location.reload(false);
     }, 3000);
   };
 
   return (
-    <Row className='main-height'>
+    <Row className="main-height">
       <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle} className='back-color'>
+        <ModalHeader toggle={toggle} className="back-color">
           Assign Role
         </ModalHeader>
         {backMsg ? (
-          <Alert color='success' className='text-center'>
+          <Alert color="success" className="text-center">
             {backMsg}
           </Alert>
         ) : (
-          ''
+          ""
         )}
         {backErrs ? (
-          <Alert color='danger' className='text-center'>
+          <Alert color="danger" className="text-center">
             {backErrs}
           </Alert>
         ) : (
-          ''
+          ""
         )}
         <Form onSubmit={onSubmit}>
           <ModalBody>
             <FormGroup>
               <Label>Role</Label>
-              <Input type='select' name='role' onChange={onChange}>
-                <option value=''>Select Role</option>
+              <Input type="select" name="role" onChange={onChange}>
+                <option value="">Select Role</option>
                 {roles.map((role) => (
                   <option value={role.name} key={role.id}>
                     {role.name}
@@ -144,8 +146,8 @@ const DefaultDashboard = (props) => {
             </FormGroup>
             <FormGroup>
               <Label>Email</Label>
-              <Input type='select' name='email' onChange={onChange}>
-                <option value=''>Select User Email</option>
+              <Input type="select" name="email" onChange={onChange}>
+                <option value="">Select User Email</option>
                 {users.map((user) => (
                   <option value={user.email} key={user.id}>
                     {user.email}
@@ -154,26 +156,30 @@ const DefaultDashboard = (props) => {
               </Input>
             </FormGroup>
           </ModalBody>
-          <ModalFooter className='back-color'>
-            <Button color='secondary'>Assign</Button>
-            <Button color='danger' onClick={toggle}>
+          <ModalFooter className="back-color">
+            <Button color="secondary">Assign</Button>
+            <Button color="danger" onClick={toggle}>
               Cancel
             </Button>
           </ModalFooter>
         </Form>
       </Modal>
       <Sidebar />
-      <Col md='9'>
+      <Col md="9">
         <Container>
-          <h3 className='text-center'>Welcome, {username}</h3>
-          <h6 className='text-capitalize text-center'>
+          <h3 className="text-center">Welcome, {username}</h3>
+          <h6 className="text-capitalize text-center">
             What do you want to do?
           </h6>
           <Container>
             <Row>
-              <Card count={2} text='Users' onClick={HandleClickUsers} />
-              <Card count={4} text='Students' onClick={HandleClickStudents} />
-              <Card count={4} text='Seats' onClick={HandleClickSeats} />
+              <Card count={2} text="Users" onClick={HandleClickUsers} />
+              <Card count={4} text="Students" onClick={HandleClickStudents} />
+              <Card
+                count={rooms ? rooms.length : 0}
+                text="Rooms"
+                onClick={HandleClickRooms}
+              />
             </Row>
           </Container>
         </Container>

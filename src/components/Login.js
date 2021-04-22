@@ -8,6 +8,7 @@ import {
   Button,
   Input,
   Alert,
+  Spinner,
 } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -35,6 +36,7 @@ const Login = (props) => {
 
   React.useEffect(() => {
     setMsg(backMsg);
+    setIsSubmitting(false)
     setTimeout(() => {
       setMsg('');
     }, 5000);
@@ -42,6 +44,7 @@ const Login = (props) => {
 
   React.useEffect(() => {
     setBackErrs(backErrors);
+    setIsSubmitting(false)
     setTimeout(() => {
       setBackErrs('');
     }, 5000);
@@ -69,7 +72,7 @@ const Login = (props) => {
           password: '',
         });
         props.history.push('/default-dashboard');
-        window.location.reload(false);
+        // window.location.reload(false);
       }, 5000);
     }
   }, [checkIsAuth]);
@@ -136,7 +139,7 @@ const Login = (props) => {
               ''
             )}
           </FormGroup>
-          <Button className='btn btn-block'>Login</Button>
+          <Button className='btn btn-block'>{isSubmitting ? <Spinner color="light" size="sm"/> : "Login"}</Button>
         </Form>
         </div>
       </Col>

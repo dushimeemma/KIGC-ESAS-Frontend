@@ -9,6 +9,7 @@ import {
   Button,
   Input,
   Alert,
+  Spinner,
 } from "reactstrap";
 
 import { createUser } from "../actions/auth";
@@ -49,6 +50,7 @@ const Signup = (props) => {
   };
   React.useEffect(() => {
     setBackErrs(backErrors);
+    setIsSubmitting(false)
     setTimeout(() => {
       setBackErrs("");
     }, 5000);
@@ -60,6 +62,7 @@ const Signup = (props) => {
   }, [errors]);
   React.useEffect(() => {
     if (checkSuccess) {
+      setIsSubmitting(false)
       setTimeout(() => {
         setState({
           name: "",
@@ -150,7 +153,7 @@ const Signup = (props) => {
                 ""
               )}
             </FormGroup>
-            <Button className="btn btn-block">Register</Button>
+            <Button className="btn btn-block">{isSubmitting ? <Spinner color="light" size="sm"/> : "Register"}</Button>
           </Form>
         </div>
       </Col>
