@@ -19,7 +19,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import Sidebar from "./Sidebar";
-import { getRooms, createRoom } from "../actions/room";
+import { getRooms, createRoom, assignRoom } from "../actions/room";
+import { getCourses } from "../actions/course";
 import roomValidations from "../validations/room";
 
 const Room = (props) => {
@@ -29,6 +30,8 @@ const Room = (props) => {
   const dispatch = useDispatch();
   const rooms = useSelector((state) => state.rooms.rooms);
   const backMsg = useSelector((state) => state.rooms.msg);
+  const assignedSuccess = useSelector((state) => state.rooms.assignedSuccess);
+  const { courses } = useSelector((state) => state.course);
   const backErrors = useSelector(
     (state) => state.errors.msg.error || state.errors.msg.msg
   );
@@ -42,14 +45,21 @@ const Room = (props) => {
     capacity: 0,
   });
   const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [isAssignSubmit, setIsAssignSubmit] = React.useState(false);
   const [backErr, setBackErr] = React.useState("");
   const [msg, setMsg] = React.useState("");
-  const [errors, setErrors] = React.useState({})
+  const [errors, setErrors] = React.useState({});
+  const [assigned, setAssigned] = React.useState({});
 
   const onChange = (e) => {
     const { name, value } = e.target;
     setState({ ...state, [name]: value });
-    setErrors({...errors, [`${name}Errors`]: null})
+    setErrors({ ...errors, [`${name}Errors`]: null });
+  };
+
+  const onAssignedChange = ({ target }) => {
+    const { name, value } = target;
+    setAssigned({ ...assigned, [name]: value });
   };
 
   const onSubmit = (e) => {
@@ -58,9 +68,22 @@ const Room = (props) => {
     setIsSubmitting(true);
   };
 
+  const onAssignedSubmit = (e) => {
+    e.preventDefault();
+    if (assigned.course_id && assigned.room_id) {
+      setIsAssignSubmit(true);
+      dispatch(assignRoom(assigned.room_id, assigned.course_id));
+    }
+  };
+
+  React.useEffect(() => {
+    setIsAssignSubmit(false);
+  }, [assignedSuccess]);
+
   React.useEffect(() => {
     setBackErr(backErrors);
     setIsSubmitting(false);
+    setIsAssignSubmit(false);
     setTimeout(() => {
       setBackErr("");
     }, 5000);
@@ -69,6 +92,7 @@ const Room = (props) => {
   React.useEffect(() => {
     setMsg(backMsg);
     setIsSubmitting(false);
+    setIsAssignSubmit(false);
     setTimeout(() => {
       setMsg("");
       dispatch(getRooms());
@@ -76,10 +100,9 @@ const Room = (props) => {
   }, [backMsg, dispatch]);
 
   React.useEffect(() => {
-    if(Object.keys(errors).length !== 0){
-      setIsSubmitting(false)
-    }
-    else if (isSubmitting ) {
+    if (Object.keys(errors).length !== 0) {
+      setIsSubmitting(false);
+    } else if (isSubmitting) {
       dispatch(createRoom(state));
     }
   }, [isSubmitting]);
@@ -98,8 +121,13 @@ const Room = (props) => {
   }, [checkSuccess, dispatch]);
 
   const [modal, setModal] = React.useState(false);
+  const [assignModal, setAssignModal] = React.useState(false);
 
   const toggle = () => setModal(!modal);
+  const toggleAssign = () => {
+    dispatch(getCourses());
+    setAssignModal(!assignModal);
+  };
 
   const onClickView = (id) => {
     // To be implemented in the future
@@ -141,9 +169,7 @@ const Room = (props) => {
                     onChange={onChange}
                     value={name}
                     className={
-                      errors.nameErrors
-                        ? "border-danger"
-                        : "border-success"
+                      errors.nameErrors ? "border-danger" : "border-success"
                     }
                   />
                 </FormGroup>
@@ -157,9 +183,7 @@ const Room = (props) => {
                     onChange={onChange}
                     value={capacity}
                     className={
-                      errors.capacityErrors
-                        ? "border-danger"
-                        : "border-success"
+                      errors.capacityErrors ? "border-danger" : "border-success"
                     }
                   />
                 </FormGroup>
@@ -176,18 +200,96 @@ const Room = (props) => {
           </ModalFooter>
         </Form>
       </Modal>
+
+      <Modal isOpen={assignModal} toggle={toggleAssign}>
+        <ModalHeader toggle={toggle} className="background">
+          Assign Room
+        </ModalHeader>
+        {assignedSuccess && msg && (
+          <Alert color="success" className="text-center">
+            {msg}
+          </Alert>
+        )}
+        {backErr ? (
+          <Alert color="danger" className="text-center">
+            {backErr}
+          </Alert>
+        ) : (
+          ""
+        )}
+        <Form onSubmit={onAssignedSubmit}>
+          <ModalBody>
+            <Row>
+              <Col sm="6">
+                <FormGroup>
+                  <Label>Select Room</Label>
+                  <Input
+                    type="text"
+                    name="room_id"
+                    list="rooms"
+                    onChange={onAssignedChange}
+                    value={assigned.room_id}
+                  />
+                  <datalist id="rooms">
+                    {rooms.map((room) => (
+                      <option key={room.id} value={room.id}>
+                        {room.name}
+                      </option>
+                    ))}
+                  </datalist>
+                </FormGroup>
+              </Col>
+              <Col sm="6">
+                <FormGroup>
+                  <Label>Select Course</Label>
+                  <Input
+                    type="text"
+                    name="course_id"
+                    list="courses"
+                    onChange={onAssignedChange}
+                    value={assigned.course_id}
+                  />
+                  <datalist id="courses">
+                    {courses.map((course) => (
+                      <option key={course.id} value={course.id}>
+                        {course.name}
+                      </option>
+                    ))}
+                  </datalist>
+                </FormGroup>
+              </Col>
+            </Row>
+          </ModalBody>
+          <ModalFooter className="background">
+            <Button className="btn btn-secondary">
+              {isAssignSubmit ? <Spinner color="light" size="sm" /> : "Assign"}
+            </Button>
+            <Button className="btn btn-danger" onClick={toggleAssign}>
+              Close
+            </Button>
+          </ModalFooter>
+        </Form>
+      </Modal>
       <Sidebar />
       <Col md="9">
         <Row>
-          <Col md="3">
+          <Col sm="6" md="4">
             <Button className="btn btn-secondary ml-5 mr-5" onClick={toggle}>
               Create Room
             </Button>
           </Col>
-          <Col md="9"></Col>
+          <Col sm="0" md="4"></Col>
+          <Col sm="6" md="4">
+            <Button
+              className="btn btn-secondary ml-5 mr-5"
+              onClick={toggleAssign}
+            >
+              Assign Course
+            </Button>
+          </Col>
         </Row>
         <Container>
-          <h3 className="text-center">Rooms</h3>
+          <h3 className="text-center center">Rooms</h3>
           {/* {msg && checkDeleteSuccess && (
             <Alert color="success" className="text-center">
               {msg}

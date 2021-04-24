@@ -15,6 +15,18 @@ export const getRooms = () => async (dispatch) => {
   }
 };
 
+export const assignRoom = (room_id, course_id)=>async dispatch=>{
+  try {
+    const res = await setAxios.post('/api/assigned_room/assign', {room_id, course_id});
+    dispatch({
+      type: types.ASSIGN_ROOM,
+      payload: res.data
+    })
+  } catch (error) {
+    dispatch(getErrors(error.response.status, error.response.data));
+  }
+}
+
 
 export const createRoom = (room) => async (dispatch) => {
   try {

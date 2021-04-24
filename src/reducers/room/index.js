@@ -7,6 +7,7 @@ const initialState = {
   msg: "",
   getSuccess: false,
   createSuccess: false,
+  assignSuccess: false,
 };
 
 export default (state = initialState, action) => {
@@ -22,6 +23,13 @@ export default (state = initialState, action) => {
         ...state,
         msg: action.payload.message,
         createSuccess: true,
+      };
+
+    case types.ASSIGN_ROOM:
+      return {
+        ...state,
+        assignSuccess: true,
+        msg: action.payload.message,
       };
     default:
       return state;
