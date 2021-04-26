@@ -40,11 +40,11 @@ const Sidebar = () => {
             Room
           </NavLink>
         </ListGroupItem>
-        <ListGroupItem className='back-color'>
+        {/* <ListGroupItem className='back-color'>
           <NavLink href='/seat' className='back-color'>
             Seat
           </NavLink>
-        </ListGroupItem>
+        </ListGroupItem> */}
       </ListGroup>
     </Col>
   );

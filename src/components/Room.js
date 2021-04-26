@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Container,
   Row,
@@ -15,17 +15,17 @@ import {
   Alert,
   Input,
   Spinner,
-} from "reactstrap";
-import { useDispatch, useSelector } from "react-redux";
+} from 'reactstrap';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Sidebar from "./Sidebar";
-import { getRooms, createRoom, assignRoom } from "../actions/room";
-import { getCourses } from "../actions/course";
-import roomValidations from "../validations/room";
+import Sidebar from './Sidebar';
+import { getRooms, createRoom, assignRoom } from '../actions/room';
+import { getCourses } from '../actions/course';
+import roomValidations from '../validations/room';
 
 const Room = (props) => {
-  if (!localStorage.getItem("token")) {
-    props.history.push("/");
+  if (!localStorage.getItem('token')) {
+    props.history.push('/');
   }
   const dispatch = useDispatch();
   const rooms = useSelector((state) => state.rooms.rooms);
@@ -41,13 +41,13 @@ const Room = (props) => {
     dispatch(getRooms());
   }, []);
   const [state, setState] = React.useState({
-    name: "",
+    name: '',
     capacity: 0,
   });
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [isAssignSubmit, setIsAssignSubmit] = React.useState(false);
-  const [backErr, setBackErr] = React.useState("");
-  const [msg, setMsg] = React.useState("");
+  const [backErr, setBackErr] = React.useState('');
+  const [msg, setMsg] = React.useState('');
   const [errors, setErrors] = React.useState({});
   const [assigned, setAssigned] = React.useState({});
 
@@ -85,7 +85,7 @@ const Room = (props) => {
     setIsSubmitting(false);
     setIsAssignSubmit(false);
     setTimeout(() => {
-      setBackErr("");
+      setBackErr('');
     }, 5000);
   }, [backErrors]);
 
@@ -94,7 +94,7 @@ const Room = (props) => {
     setIsSubmitting(false);
     setIsAssignSubmit(false);
     setTimeout(() => {
-      setMsg("");
+      setMsg('');
       dispatch(getRooms());
     }, 5000);
   }, [backMsg, dispatch]);
@@ -113,7 +113,7 @@ const Room = (props) => {
         // window.location.reload(false);
         dispatch(getRooms());
         setState({
-          name: "",
+          name: '',
           capacity: 0,
         });
       }, 6000);
@@ -140,61 +140,61 @@ const Room = (props) => {
 
   const { name, capacity } = state;
   return (
-    <Row className="main-height">
+    <Row className='main-height'>
       <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle} className="background">
+        <ModalHeader toggle={toggle} className='background'>
           Create Room
         </ModalHeader>
         {msg && (
-          <Alert color="success" className="text-center">
+          <Alert color='success' className='text-center'>
             {msg}
           </Alert>
         )}
         {backErr ? (
-          <Alert color="danger" className="text-center">
+          <Alert color='danger' className='text-center'>
             {backErr}
           </Alert>
         ) : (
-          ""
+          ''
         )}
         <Form onSubmit={onSubmit}>
           <ModalBody>
             <Row>
-              <Col sm="8">
+              <Col sm='8'>
                 <FormGroup>
                   <Label>Name</Label>
                   <Input
-                    type="text"
-                    name="name"
+                    type='text'
+                    name='name'
                     onChange={onChange}
                     value={name}
                     className={
-                      errors.nameErrors ? "border-danger" : "border-success"
+                      errors.nameErrors ? 'border-danger' : 'border-success'
                     }
                   />
                 </FormGroup>
               </Col>
-              <Col sm="4">
+              <Col sm='4'>
                 <FormGroup>
                   <Label>Capacity</Label>
                   <Input
-                    type="number"
-                    name="capacity"
+                    type='number'
+                    name='capacity'
                     onChange={onChange}
                     value={capacity}
                     className={
-                      errors.capacityErrors ? "border-danger" : "border-success"
+                      errors.capacityErrors ? 'border-danger' : 'border-success'
                     }
                   />
                 </FormGroup>
               </Col>
             </Row>
           </ModalBody>
-          <ModalFooter className="background">
-            <Button className="btn btn-secondary">
-              {isSubmitting ? <Spinner color="light" size="sm" /> : "Create"}
+          <ModalFooter className='background'>
+            <Button className='btn btn-secondary'>
+              {isSubmitting ? <Spinner color='light' size='sm' /> : 'Create'}
             </Button>
-            <Button className="btn btn-danger" onClick={toggle}>
+            <Button className='btn btn-danger' onClick={toggle}>
               Close
             </Button>
           </ModalFooter>
@@ -202,35 +202,35 @@ const Room = (props) => {
       </Modal>
 
       <Modal isOpen={assignModal} toggle={toggleAssign}>
-        <ModalHeader toggle={toggle} className="background">
+        <ModalHeader toggle={toggle} className='background'>
           Assign Room
         </ModalHeader>
         {assignedSuccess && msg && (
-          <Alert color="success" className="text-center">
+          <Alert color='success' className='text-center'>
             {msg}
           </Alert>
         )}
         {backErr ? (
-          <Alert color="danger" className="text-center">
+          <Alert color='danger' className='text-center'>
             {backErr}
           </Alert>
         ) : (
-          ""
+          ''
         )}
         <Form onSubmit={onAssignedSubmit}>
           <ModalBody>
             <Row>
-              <Col sm="6">
+              <Col sm='6'>
                 <FormGroup>
                   <Label>Select Room</Label>
                   <Input
-                    type="text"
-                    name="room_id"
-                    list="rooms"
+                    type='text'
+                    name='room_id'
+                    list='rooms'
                     onChange={onAssignedChange}
                     value={assigned.room_id}
                   />
-                  <datalist id="rooms">
+                  <datalist id='rooms'>
                     {rooms.map((room) => (
                       <option key={room.id} value={room.id}>
                         {room.name}
@@ -239,17 +239,17 @@ const Room = (props) => {
                   </datalist>
                 </FormGroup>
               </Col>
-              <Col sm="6">
+              <Col sm='6'>
                 <FormGroup>
                   <Label>Select Course</Label>
                   <Input
-                    type="text"
-                    name="course_id"
-                    list="courses"
+                    type='text'
+                    name='course_id'
+                    list='courses'
                     onChange={onAssignedChange}
                     value={assigned.course_id}
                   />
-                  <datalist id="courses">
+                  <datalist id='courses'>
                     {courses.map((course) => (
                       <option key={course.id} value={course.id}>
                         {course.name}
@@ -260,47 +260,47 @@ const Room = (props) => {
               </Col>
             </Row>
           </ModalBody>
-          <ModalFooter className="background">
-            <Button className="btn btn-secondary">
-              {isAssignSubmit ? <Spinner color="light" size="sm" /> : "Assign"}
+          <ModalFooter className='background'>
+            <Button className='btn btn-secondary'>
+              {isAssignSubmit ? <Spinner color='light' size='sm' /> : 'Assign'}
             </Button>
-            <Button className="btn btn-danger" onClick={toggleAssign}>
+            <Button className='btn btn-danger' onClick={toggleAssign}>
               Close
             </Button>
           </ModalFooter>
         </Form>
       </Modal>
       <Sidebar />
-      <Col md="9">
+      <Col md='9'>
         <Row>
-          <Col sm="6" md="4">
-            <Button className="btn btn-secondary ml-5 mr-5" onClick={toggle}>
+          <Col sm='6' md='4'>
+            <Button className='btn btn-secondary ml-5 mr-5' onClick={toggle}>
               Create Room
             </Button>
           </Col>
-          <Col sm="0" md="4"></Col>
-          <Col sm="6" md="4">
+          <Col sm='0' md='4'></Col>
+          <Col sm='6' md='4'>
             <Button
-              className="btn btn-secondary ml-5 mr-5"
+              className='btn btn-secondary ml-5 mr-5'
               onClick={toggleAssign}
             >
-              Assign Course
+              Assign Room
             </Button>
           </Col>
         </Row>
         <Container>
-          <h3 className="text-center center">Rooms</h3>
+          <h3 className='text-center center'>Rooms</h3>
           {/* {msg && checkDeleteSuccess && (
             <Alert color="success" className="text-center">
               {msg}
             </Alert>
           )} */}
           {backErr ? (
-            <Alert color="danger" className="text-center">
+            <Alert color='danger' className='text-center'>
               {backErr}
             </Alert>
           ) : (
-            ""
+            ''
           )}
           <Table>
             <thead>
@@ -322,16 +322,16 @@ const Room = (props) => {
                     <td>{room.status}</td>
                     <td>
                       <Button
-                        className="btn btn-sm m-1"
+                        className='btn btn-sm m-1'
                         onClick={() => onClickView(room.id)}
                       >
-                        <i className="fas fa-eye"></i>
+                        <i className='fas fa-eye'></i>
                       </Button>
                       <Button
-                        className="btn btn-sm m-1"
+                        className='btn btn-sm m-1'
                         onClick={() => onClickDelete(room.id)}
                       >
-                        <i className="fas fa-trash"></i>
+                        <i className='fas fa-trash'></i>
                       </Button>
                     </td>
                   </tr>
