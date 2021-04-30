@@ -16,7 +16,7 @@ export const getStudents = () => async (dispatch) => {
 
 export const getStudentsPerDept = (department) => async (dispatch) => {
   try {
-    const res = await setAxios.get('/api/student/single/class', department);
+    const res = await setAxios.post('/api/student/single-class', department);
     dispatch({
       type: types.GET_STUDENTS_DEPT,
       payload: res.data,
