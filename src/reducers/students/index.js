@@ -1,9 +1,10 @@
-import { types } from '../../actions/students/types';
+/* eslint-disable import/no-anonymous-default-export */
+import { types } from "../../actions/students/types";
 
 const initialState = {
   students: [],
   student: {},
-  msg: '',
+  msg: "",
   updateSuccess: false,
   createSuccess: false,
   deleteSuccess: false,
@@ -12,6 +13,10 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case types.GET_STUDENTS:
+      return {
+        ...state,
+        students: action.payload.students,
+      };
     case types.GET_STUDENTS_DEPT:
       return {
         ...state,
