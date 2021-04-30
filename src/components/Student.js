@@ -147,7 +147,9 @@ const Student = (props) => {
     }
   }, [checkDeleteSuccess]);
 
+
   const { regNo, name, department, level } = state;
+
   return (
     <Row className='main-height'>
       <Modal isOpen={modal} toggle={toggle}>

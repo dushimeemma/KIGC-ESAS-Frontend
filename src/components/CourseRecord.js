@@ -188,7 +188,7 @@ const CourseRecord = (props) => {
             </Col>
           </Row>
 
-          {students && (
+          {students.length && (
             <>
               <h3 className="text-center">Assigned Students</h3>
               <Table>
@@ -202,22 +202,38 @@ const CourseRecord = (props) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {students.map((student, index) => (
-                    <tr>
-                      <td>{index + 1}</td>
-                      <td>{student.Student.regNo}</td>
-                      <td>{student.Student.name}</td>
-                      <td>{student.Student.level}</td>
-                      <td>
-                        <Button
-                          className="btn btn-sm m-1"
-                          onClick={() => redirect(student.Student.id)}
-                        >
-                          <i class="fas fa-ellipsis-h"></i>
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
+                  {students &&
+                    students.map(
+                      (student, index) =>
+                        student.Student && (
+                          <tr>
+                            <td>{index + 1}</td>
+                            <td>
+                              {student.Student.regNo
+                                ? student.Student.regNo
+                                : "N/A"}
+                            </td>
+                            <td>
+                              {student.Student.name
+                                ? student.Student.name
+                                : "N/A"}
+                            </td>
+                            <td>
+                              {student.Student.level
+                                ? student.Student.level
+                                : "N/A"}
+                            </td>
+                            <td>
+                              <Button
+                                className="btn btn-sm m-1"
+                                onClick={() => redirect(student.Student.id)}
+                              >
+                                <i class="fas fa-ellipsis-h"></i>
+                              </Button>
+                            </td>
+                          </tr>
+                        )
+                    )}
                 </tbody>
               </Table>
             </>
