@@ -1,9 +1,33 @@
 import React from 'react';
-import { Row, Col, Container, Button, Table } from 'reactstrap';
+import {
+  Row,
+  Col,
+  Container,
+  Button,
+  Table,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Form,
+  FormGroup,
+  Input,
+  Label,
+  Alert,
+  Spinner,
+} from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 import Sidebar from './Sidebar';
+import Popup from '../assets/popup.svg';
 import { getStudents } from '../actions/students';
+import { record } from '../actions/finance';
+
+const validationSchema = Yup.object().shape({
+  amount: Yup.number().required().label('Amount'),
+});
 
 const Finance = (props) => {
   if (!localStorage.getItem('token')) {
@@ -14,11 +38,116 @@ const Finance = (props) => {
     dispatch(getStudents());
   }, []);
   const students = useSelector((state) => state.students.students);
-  const onClickView = (id) => {
-    props.history.push(`/finance/record/${id}`);
+  const [modal, setModal] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [backErr, setBackErr] = React.useState('');
+  const [msg, setMsg] = React.useState('');
+  const backMsg = useSelector((state) => state.finance.msg);
+  const backErrors = useSelector(
+    (state) => state.errors.msg.error || state.errors.msg.msg
+  );
+  const checkSuccess = useSelector((state) => state.finance.recordSuccess);
+
+  const handleRecordFinance = (values) => {
+    setIsSubmitting(true);
+    dispatch(record(values, localStorage.getItem('id')));
+    setTimeout(() => {
+      setIsSubmitting(false);
+    }, 500);
+  };
+
+  React.useEffect(() => {
+    setBackErr(backErrors);
+    setTimeout(() => {
+      setBackErr('');
+    }, 5000);
+  }, [backErrors]);
+
+  React.useEffect(() => {
+    setMsg(backMsg);
+    setTimeout(() => {
+      setMsg('');
+    }, 5000);
+  }, [backMsg]);
+
+  React.useEffect(() => {
+    if (checkSuccess) {
+      setTimeout(() => {
+        window.location.reload(false);
+      }, 500);
+    }
+  }, [checkSuccess]);
+
+  const toggle = (id) => {
+    localStorage.setItem('id', id);
+    setModal(!modal);
   };
   return (
     <Row className='main-height'>
+      <Modal isOpen={modal} toggle={toggle}>
+        <ModalHeader toggle={toggle} className='background'>
+          Record Finance
+        </ModalHeader>
+        <Formik
+          initialValues={{ amount: '' }}
+          onSubmit={handleRecordFinance}
+          validationSchema={validationSchema}
+        >
+          {({
+            values,
+            handleChange,
+            handleSubmit,
+            errors,
+            touched,
+            handleBlur,
+          }) => (
+            <Form onSubmit={handleSubmit}>
+              <ModalBody>
+                {msg ? (
+                  <Alert color='success' className='text-center'>
+                    {msg}
+                  </Alert>
+                ) : (
+                  ''
+                )}
+                {backErr ? (
+                  <Alert color='danger' className='text-center'>
+                    {backErr}
+                  </Alert>
+                ) : (
+                  ''
+                )}
+                <FormGroup>
+                  <Label>Amount</Label>
+                  <Input
+                    type='text'
+                    placeholder='eg: 60000'
+                    name='amount'
+                    onChange={handleChange}
+                    value={values.amount}
+                    onBlur={handleBlur}
+                  />
+                  {errors.amount && touched.amount && (
+                    <div className='text-danger'>{errors.amount} </div>
+                  )}
+                </FormGroup>
+              </ModalBody>
+              <ModalFooter className='background'>
+                <Button className='btn btn-secondary'>
+                  {isSubmitting ? (
+                    <Spinner color='light' size='sm' />
+                  ) : (
+                    'Record'
+                  )}
+                </Button>
+                <Button className='btn btn-danger' onClick={toggle}>
+                  Close
+                </Button>
+              </ModalFooter>
+            </Form>
+          )}
+        </Formik>
+      </Modal>
       <Sidebar />
       <Col md='9'>
         <Container>
@@ -55,10 +184,10 @@ const Finance = (props) => {
                   </td>
                   <td>
                     <Button
-                      className='btn btn-sm m-1'
-                      onClick={() => onClickView(student.id)}
+                      className='btn btn-sm m-1 btn-light'
+                      onClick={() => toggle(student.id)}
                     >
-                      <i className='fas fa-eye'></i>
+                      <img src={Popup} alt='popup' className='w-25 h-25' />
                     </Button>
                   </td>
                 </tr>
