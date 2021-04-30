@@ -9,6 +9,7 @@ import attendance from './attendance';
 import finance from './finance';
 import course from './course';
 import seat from './seat';
+import count from './count';
 
 export default combineReducers({
   auth,
@@ -21,4 +22,5 @@ export default combineReducers({
   finance,
   course,
   seat,
+  count,
 });
