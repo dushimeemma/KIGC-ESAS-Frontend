@@ -7,7 +7,7 @@ const initialState = {
   course: {},
   assignSuccess: false,
   createSuccess: false,
-  assignedStudents: []
+  assignedStudents: [],
 };
 
 export default (state = initialState, action) => {
@@ -48,9 +48,13 @@ export default (state = initialState, action) => {
       return {
         ...state,
         assignedStudents: action.payload.assigned_course,
-        msg: action.payload.message
-      }
-
+        msg: action.payload.message,
+      };
+    case types.CLEAR_COURSES:
+      return {
+        ...state,
+        msg: action.payload.message,
+      };
     default:
       return state;
   }

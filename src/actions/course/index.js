@@ -1,10 +1,13 @@
-import { types } from './types';
-import setAxios from '../setUpAxios';
-import { getErrors } from '../errors';
+import { types } from "./types";
+import setAxios from "../setUpAxios";
+import { getErrors } from "../errors";
 
 export const assignCourse = (student_reg, course_id) => async (dispatch) => {
   try {
-    const res = await setAxios.post('/api/assigned_course/assign', { student_reg, course_id });
+    const res = await setAxios.post("/api/assigned_course/assign", {
+      student_reg,
+      course_id,
+    });
     dispatch({
       type: types.ASSIGN_COURSE,
       payload: res.data,
@@ -25,36 +28,51 @@ export const assignedStudents = (course_id) => async (dispatch) => {
   }
 };
 
-export const getCourses = ()=>async dispatch=>{
+export const getCourses = () => async (dispatch) => {
   try {
-    const res = await setAxios.get('/api/course');
+    const res = await setAxios.get("/api/course");
     dispatch({
       type: types.GET_COURSES,
-      payload: res.data
-    })
+      payload: res.data,
+    });
   } catch (error) {
     dispatch(getErrors(error.response.status, error.response.data));
   }
-}
-export const getCourse = (id)=>async dispatch=>{
+};
+export const getCourse = (id) => async (dispatch) => {
   try {
     const res = await setAxios.get(`/api/course/${id}`);
     dispatch({
       type: types.GET_COURSE,
-      payload: res.data
-    })
+      payload: res.data,
+    });
   } catch (error) {
     dispatch(getErrors(error.response.status, error.response.data));
   }
-}
-export const createCourse = (course)=>async dispatch=>{
+};
+export const createCourse = (course) => async (dispatch) => {
   try {
-    const res = await setAxios.post('/api/course/create', course);
+    const res = await setAxios.post("/api/course/create", course);
     dispatch({
       type: types.CREATE_COURSE,
-      payload: res.data
-    })
+      payload: res.data,
+    });
   } catch (error) {
     dispatch(getErrors(error.response.status, error.response.data));
   }
-}
+};
+
+export const clearCourses = () => async (dispatch) => {
+  try {
+    const res = await setAxios.get("/api/course/clean/courses");
+    if(res) {
+      setAxios.get("/api/assigned_course/clean/assigned-courses")
+    }
+    dispatch({
+      type: types.CLEAR_COURSES,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch(getErrors(error.response.status, error.response.data));
+  }
+};

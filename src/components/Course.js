@@ -20,8 +20,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Sidebar from "./Sidebar";
 import { getStudents } from "../actions/students";
-import { createCourse, getCourses } from "../actions/course";
+import { createCourse, getCourses, clearCourses } from "../actions/course";
 import validations from "../validations/course";
+import ClearButton from "./common/ClearButton";
 
 const Course = (props) => {
   if (!localStorage.getItem("token")) {
@@ -106,6 +107,9 @@ const Course = (props) => {
     props.history.push(`/course/record/${id}`);
   };
 
+  const onClear = () => {
+    dispatch(clearCourses());
+  };
   const { name, start_date, end_date, session } = state;
   return (
     <Row className="main-height">
@@ -249,6 +253,7 @@ const Course = (props) => {
           </tbody>
         </Table>
       </Col>
+      <ClearButton action={onClear} />
     </Row>
   );
 };

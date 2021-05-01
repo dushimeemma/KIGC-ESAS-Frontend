@@ -62,6 +62,18 @@ export const createStudent = (student) => async (dispatch) => {
   }
 };
 
+export const clearStudents = () => async (dispatch) => {
+  try {
+    const res = await setAxios.get('/api/student/clean/students');
+    dispatch({
+      type: types.CLEAR_STUDENTS,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch(getErrors(error.response.status, error.response.data));
+  }
+};
+
 export const deleteStudent = (id) => async (dispatch) => {
   try {
     const res = await setAxios.delete(`/api/student/${id}`);
