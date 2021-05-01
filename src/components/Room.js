@@ -19,9 +19,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import Sidebar from "./Sidebar";
-import { getRooms, createRoom, assignRoom } from "../actions/room";
+import { getRooms, createRoom, assignRoom, clearRoom } from "../actions/room";
 import { getCourses } from "../actions/course";
 import roomValidations from "../validations/room";
+import ClearButton from "./common/ClearButton";
 
 const Room = (props) => {
   if (!localStorage.getItem("token")) {
@@ -69,6 +70,10 @@ const Room = (props) => {
     e.preventDefault();
     setErrors(roomValidations(state));
     setIsSubmitting(true);
+  };
+
+  const onClear = () => {
+    dispatch(clearRoom());
   };
 
   const onAssignedSubmit = (e) => {
@@ -344,6 +349,7 @@ const Room = (props) => {
           </Table>
         </Container>
       </Col>
+      <ClearButton action={onClear} />
     </Row>
   );
 };

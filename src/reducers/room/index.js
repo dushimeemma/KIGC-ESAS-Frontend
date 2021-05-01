@@ -31,6 +31,11 @@ export default (state = initialState, action) => {
         assignSuccess: true,
         msg: action.payload.message,
       };
+    case types.CLEAR_ROOM:
+      return {
+        ...state,
+        msg: action.payload.message,
+      };
     default:
       return state;
   }

@@ -26,7 +26,9 @@ import {
   createStudent,
   deleteStudent,
   getStudentsPerDept,
+  clearStudents
 } from '../actions/students';
+import ClearButton from './common/ClearButton';
 
 const validationSchema = Yup.object().shape({
   department: Yup.string().required().min(2).label('Department'),
@@ -147,6 +149,9 @@ const Student = (props) => {
     }
   }, [checkDeleteSuccess]);
 
+  const onClear = ()=>{
+    dispatch(clearStudents())
+  }
 
   const { regNo, name, department, level } = state;
 
@@ -344,6 +349,7 @@ const Student = (props) => {
           </Table>
         </Container>
       </Col>
+      <ClearButton action={onClear}/>
     </Row>
   );
 };

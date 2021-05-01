@@ -40,4 +40,16 @@ export const createRoom = (room) => async (dispatch) => {
   }
 };
 
+export const clearRoom = () => async dispatch => {
+  try{
+    const res = await setAxios.get('/api/room/clean/rooms');
+    dispatch({
+      type: types.CLEAR_ROOM,
+      payload: res.data
+    })
+  }catch(error){
+    dispatch(getErrors(error.response.status, error.response.data));
+  }
+}
+
 

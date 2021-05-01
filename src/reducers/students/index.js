@@ -42,6 +42,11 @@ export default (state = initialState, action) => {
         msg: action.payload.msg,
         createSuccess: true,
       };
+    case types.CLEAR_STUDENTS:
+      return {
+        ...state,
+        msg: action.payload.message,
+      };
     case types.DELETE_STUDENT:
       return {
         ...state,

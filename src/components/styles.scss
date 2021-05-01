@@ -64,3 +64,9 @@
   text-align: center;
   margin: 1.2rem 0;
 }
+
+.clear {
+  position: fixed;
+  top: calc(100vh - 150px);
+  right: 20px;
+}
