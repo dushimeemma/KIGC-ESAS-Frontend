@@ -22,11 +22,15 @@ import * as Yup from 'yup';
 
 import Sidebar from './Sidebar';
 import Popup from '../assets/popup.svg';
-import { getStudents } from '../actions/students';
+import { getStudents, searchStudents } from '../actions/students';
 import { record } from '../actions/finance';
 
 const validationSchema = Yup.object().shape({
   amount: Yup.number().required().label('Amount'),
+});
+
+const searchValidationSchema = Yup.object().shape({
+  term: Yup.string().required().label('Search Term'),
 });
 
 const Finance = (props) => {
@@ -37,7 +41,9 @@ const Finance = (props) => {
   React.useEffect(() => {
     dispatch(getStudents());
   }, []);
-  const students = useSelector((state) => state.students.students);
+  const { students, isSearchingStudents } = useSelector(
+    (state) => state.students
+  );
   const [modal, setModal] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [backErr, setBackErr] = React.useState('');
@@ -77,6 +83,10 @@ const Finance = (props) => {
       }, 500);
     }
   }, [checkSuccess]);
+
+  const handleSearchStudents = (values) => {
+    dispatch(searchStudents(values.term));
+  };
 
   const toggle = (id) => {
     localStorage.setItem('id', id);
@@ -150,6 +160,46 @@ const Finance = (props) => {
       </Modal>
       <Sidebar />
       <Col md='9'>
+        <Row>
+          <Col md='6' />
+          <Col md='6'>
+            <Formik
+              initialValues={{ term: '' }}
+              onSubmit={handleSearchStudents}
+              validationSchema={searchValidationSchema}
+            >
+              {({
+                values,
+                handleChange,
+                handleSubmit,
+                errors,
+                touched,
+                handleBlur,
+              }) => (
+                <Form inline onSubmit={handleSubmit}>
+                  <Input
+                    className='m-1'
+                    placeholder='Search students...'
+                    name='term'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.term}
+                  />
+                  {errors.term && touched.term && (
+                    <div className='text-danger'>{errors.term} </div>
+                  )}
+                  <Button type='submit'>
+                    {isSearchingStudents ? (
+                      <Spinner color='light' size='sm' />
+                    ) : (
+                      'Search'
+                    )}
+                  </Button>
+                </Form>
+              )}
+            </Formik>
+          </Col>
+        </Row>
         <Container>
           <h3 className='text-center'>All Students Financial Status</h3>
           <Table>
