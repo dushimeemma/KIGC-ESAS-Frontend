@@ -73,3 +73,22 @@ export const deleteStudent = (id) => async (dispatch) => {
     dispatch(getErrors(error.response.status, error.response.data));
   }
 };
+
+export const searchStudents = (term) => async (dispatch) => {
+  dispatch(isSearchingStudents());
+  try {
+    const res = await setAxios.get(`/api/student/search/students?term=${term}`);
+    dispatch({
+      type: types.SEARCH_STUDENTS,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch(getErrors(error.response.status, error.response.data));
+  }
+};
+
+export const isSearchingStudents = () => {
+  return {
+    type: types.IS_SEARCHING_STUDENTS,
+  };
+};

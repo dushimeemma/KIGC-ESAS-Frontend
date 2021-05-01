@@ -22,11 +22,15 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Sidebar from './Sidebar';
 import Popup from '../assets/popup.svg';
-import { getStudents } from '../actions/students';
+import { getStudents, searchStudents } from '../actions/students';
 import { record } from '../actions/attendance';
 
 const validationSchema = Yup.object().shape({
   percentage: Yup.number().required().label('Percentage'),
+});
+
+const searchValidationSchema = Yup.object().shape({
+  term: Yup.string().required().label('Search Term'),
 });
 
 const Attendance = (props) => {
@@ -39,7 +43,9 @@ const Attendance = (props) => {
   React.useEffect(() => {
     dispatch(getStudents());
   }, []);
-  const students = useSelector((state) => state.students.students);
+  const { students, isSearchingStudents } = useSelector(
+    (state) => state.students
+  );
   const backMsg = useSelector((state) => state.attendance.msg);
   const backErrors = useSelector(
     (state) => state.errors.msg.error || state.errors.msg.msg
@@ -78,6 +84,10 @@ const Attendance = (props) => {
       }, 500);
     }
   }, [checkSuccess]);
+
+  const handleSearchStudents = (values) => {
+    dispatch(searchStudents(values.term));
+  };
 
   const toggle = (id) => {
     localStorage.setItem('id', id);
@@ -151,6 +161,46 @@ const Attendance = (props) => {
       </Modal>
       <Sidebar />
       <Col md='9'>
+        <Row>
+          <Col md='6' />
+          <Col md='6'>
+            <Formik
+              initialValues={{ term: '' }}
+              onSubmit={handleSearchStudents}
+              validationSchema={searchValidationSchema}
+            >
+              {({
+                values,
+                handleChange,
+                handleSubmit,
+                errors,
+                touched,
+                handleBlur,
+              }) => (
+                <Form inline onSubmit={handleSubmit}>
+                  <Input
+                    className='m-1'
+                    placeholder='Search students...'
+                    name='term'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    value={values.term}
+                  />
+                  {errors.term && touched.term && (
+                    <div className='text-danger'>{errors.term} </div>
+                  )}
+                  <Button type='submit'>
+                    {isSearchingStudents ? (
+                      <Spinner color='light' size='sm' />
+                    ) : (
+                      'Search'
+                    )}
+                  </Button>
+                </Form>
+              )}
+            </Formik>
+          </Col>
+        </Row>
         <Container>
           <h3 className='text-center'>All Students Attendance</h3>
           <Table>
