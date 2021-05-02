@@ -35,7 +35,7 @@ const searchValidationSchema = Yup.object().shape({
 
 const Attendance = (props) => {
   if (!localStorage.getItem('token')) {
-    props.history.push('/');
+    props.history.push('/login');
   }
   const dispatch = useDispatch();
   const [modal, setModal] = React.useState(false);

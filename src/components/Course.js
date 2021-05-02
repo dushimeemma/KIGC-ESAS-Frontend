@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Container,
   Row,
@@ -15,18 +15,19 @@ import {
   Alert,
   Input,
   Spinner,
-} from "reactstrap";
-import { useDispatch, useSelector } from "react-redux";
+} from 'reactstrap';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Sidebar from "./Sidebar";
-import { getStudents } from "../actions/students";
-import { createCourse, getCourses, clearCourses } from "../actions/course";
-import validations from "../validations/course";
-import ClearButton from "./common/ClearButton";
+import Popup from '../assets/popup.svg';
+import Sidebar from './Sidebar';
+import { getStudents } from '../actions/students';
+import { createCourse, getCourses, clearCourses } from '../actions/course';
+import validations from '../validations/course';
+import ClearButton from './common/ClearButton';
 
 const Course = (props) => {
-  if (!localStorage.getItem("token")) {
-    props.history.push("/");
+  if (!localStorage.getItem('token')) {
+    props.history.push('/login');
   }
   const backErrors = useSelector(
     (state) => state.errors.msg.error || state.errors.msg.msg
@@ -34,15 +35,15 @@ const Course = (props) => {
   const { createSuccess, msg, courses } = useSelector((state) => state.course);
 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [backErr, setBackErr] = React.useState("");
-  const [message, setMessage] = React.useState("");
+  const [backErr, setBackErr] = React.useState('');
+  const [message, setMessage] = React.useState('');
   const [errors, setErrors] = React.useState({});
   const [modal, setModal] = React.useState(false);
   const [state, setState] = React.useState({
-    name: "",
-    start_date: "",
-    end_date: "",
-    session: "",
+    name: '',
+    start_date: '',
+    end_date: '',
+    session: '',
   });
 
   const toggle = () => setModal(!modal);
@@ -68,7 +69,7 @@ const Course = (props) => {
     setBackErr(backErrors);
     setIsSubmitting(false);
     setTimeout(() => {
-      setBackErr("");
+      setBackErr('');
     }, 5000);
   }, [backErrors]);
 
@@ -76,7 +77,7 @@ const Course = (props) => {
     setMessage(msg);
     setIsSubmitting(false);
     setTimeout(() => {
-      setMessage("");
+      setMessage('');
       dispatch(getCourses());
     }, 5000);
   }, [msg, dispatch]);
@@ -94,10 +95,10 @@ const Course = (props) => {
       setTimeout(() => {
         dispatch(getCourses());
         setState({
-          name: "",
-          start_date: "",
-          end_date: "",
-          session: "",
+          name: '',
+          start_date: '',
+          end_date: '',
+          session: '',
         });
       }, 6000);
     }
@@ -112,48 +113,48 @@ const Course = (props) => {
   };
   const { name, start_date, end_date, session } = state;
   return (
-    <Row className="main-height">
+    <Row className='main-height'>
       <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle} className="background">
+        <ModalHeader toggle={toggle} className='background'>
           Create Course
         </ModalHeader>
         {message && (
-          <Alert color="success" className="text-center">
+          <Alert color='success' className='text-center'>
             {msg}
           </Alert>
         )}
         {backErr && (
-          <Alert color="danger" className="text-center">
+          <Alert color='danger' className='text-center'>
             {backErr}
           </Alert>
         )}
         <Form onSubmit={onSubmit}>
           <ModalBody>
             <Row>
-              <Col sm="12">
+              <Col sm='12'>
                 <FormGroup>
                   <Label>Name</Label>
                   <Input
-                    type="text"
-                    name="name"
+                    type='text'
+                    name='name'
                     onChange={onChange}
                     value={name}
                     className={
-                      errors.nameErrors ? "border-danger" : "border-success"
+                      errors.nameErrors ? 'border-danger' : 'border-success'
                     }
                   />
                 </FormGroup>
               </Col>
-              <Col sm="12">
+              <Col sm='12'>
                 <FormGroup>
                   <Label>Session</Label>
                   <Input
-                    type="select"
-                    name="session"
+                    type='select'
+                    name='session'
                     onChange={onChange}
                     value={session}
                     className={
-                      errors.sessionErrors ? "border-danger" : "border-success"
+                      errors.sessionErrors ? 'border-danger' : 'border-success'
                     }
                   >
                     <option>Day</option>
@@ -162,64 +163,64 @@ const Course = (props) => {
                   </Input>
                 </FormGroup>
               </Col>
-              <Col sm="6">
+              <Col sm='6'>
                 <FormGroup>
                   <Label>Start date</Label>
                   <Input
-                    type="date"
-                    name="start_date"
-                    id="exampleDate"
-                    placeholder="Starting date"
+                    type='date'
+                    name='start_date'
+                    id='exampleDate'
+                    placeholder='Starting date'
                     onChange={onChange}
                     value={start_date}
                     className={
                       errors.start_dateErrors
-                        ? "border-danger"
-                        : "border-success"
+                        ? 'border-danger'
+                        : 'border-success'
                     }
                   />
                 </FormGroup>
               </Col>
-              <Col sm="6">
+              <Col sm='6'>
                 <FormGroup>
                   <Label>End date</Label>
                   <Input
-                    type="date"
-                    name="end_date"
-                    id="exampleDate"
-                    placeholder="End date"
+                    type='date'
+                    name='end_date'
+                    id='exampleDate'
+                    placeholder='End date'
                     onChange={onChange}
                     value={end_date}
                     className={
-                      errors.end_dateErrors ? "border-danger" : "border-success"
+                      errors.end_dateErrors ? 'border-danger' : 'border-success'
                     }
                   />
                 </FormGroup>
               </Col>
             </Row>
           </ModalBody>
-          <ModalFooter className="background">
-            <Button className="btn btn-secondary">
-              {isSubmitting ? <Spinner color="light" size="sm" /> : "Create"}
+          <ModalFooter className='background'>
+            <Button className='btn btn-secondary'>
+              {isSubmitting ? <Spinner color='light' size='sm' /> : 'Create'}
             </Button>
-            <Button className="btn btn-danger" onClick={toggle}>
+            <Button className='btn btn-danger' onClick={toggle}>
               Close
             </Button>
           </ModalFooter>
         </Form>
       </Modal>
       <Sidebar />
-      <Col md="9">
+      <Col md='9'>
         <Row>
-          <Col md="3">
-            <Button className="btn btn-secondary ml-5 mr-5" onClick={toggle}>
+          <Col md='3'>
+            <Button className='btn btn-secondary ml-5 mr-5' onClick={toggle}>
               Create Course
             </Button>
           </Col>
-          <Col md="9"></Col>
+          <Col md='9'></Col>
         </Row>
         <Container>
-          <h3 className="text-center">All courses</h3>
+          <h3 className='text-center'>All courses</h3>
         </Container>
         <Table>
           <thead>
@@ -237,15 +238,15 @@ const Course = (props) => {
               <tr key={course.id}>
                 <td>{index + 1}</td>
                 <td>{course.name}</td>
-                <td>{course.session || "N/A"}</td>
-                <td>{course.start_date || "N/A"}</td>
-                <td>{course.end_date || "N/A"}</td>
+                <td>{course.session || 'N/A'}</td>
+                <td>{course.start_date || 'N/A'}</td>
+                <td>{course.end_date || 'N/A'}</td>
                 <td>
                   <Button
-                    className="btn btn-sm m-1"
+                    className='btn btn-sm m-1 btn-light'
                     onClick={() => onClickView(course.id)}
                   >
-                    <i className="fas fa-eye"></i>
+                    <img src={Popup} alt='assign couse' className='h-25 w-25' />
                   </Button>
                 </td>
               </tr>

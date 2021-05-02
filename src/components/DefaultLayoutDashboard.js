@@ -12,7 +12,7 @@ import {
 
 const DefaultDashboard = (props) => {
   if (!localStorage.getItem('token')) {
-    props.history.push('/');
+    props.history.push('/login');
   }
   const username = localStorage.getItem('username');
   const dispatch = useDispatch();

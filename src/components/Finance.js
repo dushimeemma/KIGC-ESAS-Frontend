@@ -35,7 +35,7 @@ const searchValidationSchema = Yup.object().shape({
 
 const Finance = (props) => {
   if (!localStorage.getItem('token')) {
-    props.history.push('/');
+    props.history.push('/login');
   }
   const dispatch = useDispatch();
   React.useEffect(() => {

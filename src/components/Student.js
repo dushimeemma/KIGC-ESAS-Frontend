@@ -26,7 +26,7 @@ import {
   createStudent,
   deleteStudent,
   getStudentsPerDept,
-  clearStudents
+  clearStudents,
 } from '../actions/students';
 import ClearButton from './common/ClearButton';
 
@@ -37,7 +37,7 @@ const validationSchema = Yup.object().shape({
 
 const Student = (props) => {
   if (!localStorage.getItem('token')) {
-    props.history.push('/');
+    props.history.push('/login');
   }
   const dispatch = useDispatch();
   const students = useSelector((state) => state.students.students);
@@ -149,9 +149,9 @@ const Student = (props) => {
     }
   }, [checkDeleteSuccess]);
 
-  const onClear = ()=>{
-    dispatch(clearStudents())
-  }
+  const onClear = () => {
+    dispatch(clearStudents());
+  };
 
   const { regNo, name, department, level } = state;
 
@@ -349,7 +349,7 @@ const Student = (props) => {
           </Table>
         </Container>
       </Col>
-      <ClearButton action={onClear}/>
+      <ClearButton action={onClear} />
     </Row>
   );
 };

@@ -23,7 +23,7 @@ import { getRoles, assignRole } from '../actions/roles';
 
 const Dashboard = (props) => {
   if (!localStorage.getItem('token')) {
-    props.history.push('/');
+    props.history.push('/login');
   }
   const dispatch = useDispatch();
   React.useEffect(() => {

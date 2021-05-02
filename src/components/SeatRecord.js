@@ -23,7 +23,7 @@ import { assign } from '../actions/seat';
 
 const SeatRecord = (props) => {
   if (!localStorage.getItem('token')) {
-    props.history.push('/');
+    props.history.push('/login');
   }
   const dispatch = useDispatch();
   React.useEffect(() => {
