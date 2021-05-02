@@ -22,7 +22,7 @@ import { getRole, updateRole } from '../actions/roles';
 
 const RoleSingle = (props) => {
   if (!localStorage.getItem('token')) {
-    props.history.push('/');
+    props.history.push('/login');
   }
   const dispatch = useDispatch();
   React.useEffect(() => {

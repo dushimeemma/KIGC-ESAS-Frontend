@@ -36,7 +36,7 @@ const Login = (props) => {
 
   React.useEffect(() => {
     setMsg(backMsg);
-    setIsSubmitting(false)
+    setIsSubmitting(false);
     setTimeout(() => {
       setMsg('');
     }, 5000);
@@ -44,7 +44,7 @@ const Login = (props) => {
 
   React.useEffect(() => {
     setBackErrs(backErrors);
-    setIsSubmitting(false)
+    setIsSubmitting(false);
     setTimeout(() => {
       setBackErrs('');
     }, 5000);
@@ -72,7 +72,7 @@ const Login = (props) => {
           password: '',
         });
         props.history.push('/default-dashboard');
-        // window.location.reload(false);
+        window.location.reload(false);
       }, 5000);
     }
   }, [checkIsAuth]);
@@ -81,66 +81,68 @@ const Login = (props) => {
   return (
     <Row className='main-height'>
       <Image />
-      <Col className="">
-        <div className=" border p-2 aside back-color">
-        <h3 className='text-center'>
-          Login To <br />
-          KIGC-ESAS
-        </h3>
-        {msg ? (
-          <Alert color='success' className='text-center'>
-            {msg}
-          </Alert>
-        ) : (
-          ''
-        )}
-        {backErrs ? (
-          <Alert color='danger' className='text-center'>
-            {backErrs}
-          </Alert>
-        ) : (
-          ''
-        )}
-        <hr />
-        <Form onSubmit={onSubmit}>
-          <FormGroup>
-            <Label>Email</Label>
-            <Input
-              type='text'
-              name='email'
-              onChange={onChange}
-              value={email}
-              placeholder='eg: dushimeemma@gmail.com'
-              className={emailErrors ? 'border-danger' : 'border-success'}
-            />
-            {emailErrors ? (
-              <Alert className='alert alert-danger background'>
-                {emailErrors}
-              </Alert>
-            ) : (
-              ''
-            )}
-          </FormGroup>
-          <FormGroup>
-            <Label>Password</Label>
-            <Input
-              type='password'
-              name='password'
-              onChange={onChange}
-              value={password}
-              placeholder='eg: Password123'
-              className={passwordErrors ? 'border-danger' : 'border-success'}
-            />
-            {passwordErrors ? (
-              <Alert className='alert alert-danger background'>
-                {passwordErrors}
-              </Alert>
-            ) : (
-              ''
-            )}
-          </FormGroup>
-          <Button className='btn btn-block'>{isSubmitting ? <Spinner color="light" size="sm"/> : "Login"}</Button>
-        </Form>
+      <Col className=''>
+        <div className=' border p-2 aside back-color'>
+          <h3 className='text-center'>
+            Login To <br />
+            KIGC-ESAS
+          </h3>
+          {msg ? (
+            <Alert color='success' className='text-center'>
+              {msg}
+            </Alert>
+          ) : (
+            ''
+          )}
+          {backErrs ? (
+            <Alert color='danger' className='text-center'>
+              {backErrs}
+            </Alert>
+          ) : (
+            ''
+          )}
+          <hr />
+          <Form onSubmit={onSubmit}>
+            <FormGroup>
+              <Label>Email</Label>
+              <Input
+                type='text'
+                name='email'
+                onChange={onChange}
+                value={email}
+                placeholder='eg: dushimeemma@gmail.com'
+                className={emailErrors ? 'border-danger' : 'border-success'}
+              />
+              {emailErrors ? (
+                <Alert className='alert alert-danger background'>
+                  {emailErrors}
+                </Alert>
+              ) : (
+                ''
+              )}
+            </FormGroup>
+            <FormGroup>
+              <Label>Password</Label>
+              <Input
+                type='password'
+                name='password'
+                onChange={onChange}
+                value={password}
+                placeholder='eg: Password123'
+                className={passwordErrors ? 'border-danger' : 'border-success'}
+              />
+              {passwordErrors ? (
+                <Alert className='alert alert-danger background'>
+                  {passwordErrors}
+                </Alert>
+              ) : (
+                ''
+              )}
+            </FormGroup>
+            <Button className='btn btn-block'>
+              {isSubmitting ? <Spinner color='light' size='sm' /> : 'Login'}
+            </Button>
+          </Form>
         </div>
       </Col>
     </Row>

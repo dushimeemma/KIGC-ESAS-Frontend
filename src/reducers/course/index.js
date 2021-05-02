@@ -1,13 +1,14 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { types } from "../../actions/course/types";
+import { types } from '../../actions/course/types';
 
 const initialState = {
-  msg: "",
+  msg: '',
   courses: [],
   course: {},
   assignSuccess: false,
   createSuccess: false,
   assignedStudents: [],
+  isLoading: false,
 };
 
 export default (state = initialState, action) => {
@@ -54,6 +55,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         msg: action.payload.message,
+      };
+    case types.ASSIGN_COURSE_TO_CLASS:
+      return {
+        ...state,
+        msg: action.payload.message,
+        isLoading: false,
       };
     default:
       return state;

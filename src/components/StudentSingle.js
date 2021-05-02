@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Container,
   Row,
@@ -14,16 +14,16 @@ import {
   Input,
   Label,
   Alert,
-} from "reactstrap";
-import { useDispatch, useSelector } from "react-redux";
+} from 'reactstrap';
+import { useDispatch, useSelector } from 'react-redux';
 
-import Sidebar from "./Sidebar";
-import { getStudent, updateStudent } from "../actions/students";
-import Student from "./Student";
+import Sidebar from './Sidebar';
+import { getStudent, updateStudent } from '../actions/students';
+import Student from './Student';
 
 const StudentSingle = (props) => {
-  if (!localStorage.getItem("token")) {
-    props.history.push("/");
+  if (!localStorage.getItem('token')) {
+    props.history.push('/login');
   }
   const dispatch = useDispatch();
   React.useEffect(() => {
@@ -37,15 +37,15 @@ const StudentSingle = (props) => {
   const checkSuccess = useSelector((state) => state.students.updateSuccess);
   const [modal, setModal] = React.useState(false);
   const [state, setState] = React.useState({
-    id: "",
-    regNo: "",
-    name: "",
-    department: "",
-    level: "",
+    id: '',
+    regNo: '',
+    name: '',
+    department: '',
+    level: '',
   });
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [backErr, setBackErr] = React.useState("");
-  const [msg, setMsg] = React.useState("");
+  const [backErr, setBackErr] = React.useState('');
+  const [msg, setMsg] = React.useState('');
   React.useEffect(() => {
     if (Object.keys(student).length > 0) {
       setState({
@@ -61,14 +61,14 @@ const StudentSingle = (props) => {
   React.useEffect(() => {
     setBackErr(backErrors);
     setTimeout(() => {
-      setBackErr("");
+      setBackErr('');
     }, 5000);
   }, [backErrors]);
 
   React.useEffect(() => {
     setMsg(backMsg);
     setTimeout(() => {
-      setMsg("");
+      setMsg('');
     }, 5000);
   }, [backMsg]);
 
@@ -99,45 +99,45 @@ const StudentSingle = (props) => {
   const toggle = () => setModal(!modal);
 
   return (
-    <Row className="main-height">
+    <Row className='main-height'>
       <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle} className="background">
+        <ModalHeader toggle={toggle} className='background'>
           Update Student
         </ModalHeader>
         {msg ? (
-          <Alert color="success" className="text-center">
+          <Alert color='success' className='text-center'>
             {msg}
           </Alert>
         ) : (
-          ""
+          ''
         )}
         {backErr ? (
-          <Alert color="danger" className="text-center">
+          <Alert color='danger' className='text-center'>
             {backErr}
           </Alert>
         ) : (
-          ""
+          ''
         )}
         <Form onSubmit={onSubmit}>
           <ModalBody>
             <FormGroup>
               <Label>Reg No</Label>
               <Input
-                type="text"
-                name="regNo"
+                type='text'
+                name='regNo'
                 onChange={onChange}
                 value={regNo}
               />
             </FormGroup>
             <FormGroup>
               <Label>Name</Label>
-              <Input type="text" name="name" onChange={onChange} value={name} />
+              <Input type='text' name='name' onChange={onChange} value={name} />
             </FormGroup>
             <FormGroup>
               <Label>Department</Label>
               <Input
-                type="text"
-                name="department"
+                type='text'
+                name='department'
                 onChange={onChange}
                 value={department}
               />
@@ -145,25 +145,25 @@ const StudentSingle = (props) => {
             <FormGroup>
               <Label>Level</Label>
               <Input
-                type="text"
-                name="level"
+                type='text'
+                name='level'
                 onChange={onChange}
                 value={level}
               />
             </FormGroup>
           </ModalBody>
-          <ModalFooter className="background">
-            <Button className="btn btn-secondary">Update</Button>
-            <Button onClick={toggle} className="btn btn-danger">
+          <ModalFooter className='background'>
+            <Button className='btn btn-secondary'>Update</Button>
+            <Button onClick={toggle} className='btn btn-danger'>
               Close
             </Button>
           </ModalFooter>
         </Form>
       </Modal>
       <Sidebar />
-      <Col md="9">
+      <Col md='9'>
         <Container>
-          <h3 className="text-center">Single Student</h3>
+          <h3 className='text-center'>Single Student</h3>
           <Table>
             <thead>
               <tr>
@@ -184,7 +184,7 @@ const StudentSingle = (props) => {
                 <td>{student.name}</td>
                 <td>{student.department}</td>
                 <td>{student.level}</td>
-                <td>{student.Finance ? student.Finance.status : "N/A"}</td>
+                <td>{student.Finance ? student.Finance.status : 'N/A'}</td>
                 <td>
                   {student.seat ? (
                     <>
@@ -192,12 +192,12 @@ const StudentSingle = (props) => {
                       <p>{`No: ${student.Seat.seatNumber}`}</p>
                     </>
                   ) : (
-                    "None"
+                    'None'
                   )}
                 </td>
                 <td>
-                  <Button className="btn btn-sm m-1" onClick={toggle}>
-                    <i className="fas fa-edit"></i>
+                  <Button className='btn btn-sm m-1' onClick={toggle}>
+                    <i className='fas fa-edit'></i>
                   </Button>
                 </td>
               </tr>

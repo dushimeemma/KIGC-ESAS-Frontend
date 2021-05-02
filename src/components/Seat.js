@@ -7,7 +7,7 @@ import { getStudents } from '../actions/students';
 
 const Seat = (props) => {
   if (!localStorage.getItem('token')) {
-    props.history.push('/');
+    props.history.push('/login');
   }
   const dispatch = useDispatch();
   React.useEffect(() => {
