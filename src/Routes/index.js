@@ -18,6 +18,7 @@ import CourseRecord from '../components/CourseRecord';
 import Room from '../components/Room';
 import SeatRecord from '../components/SeatRecord';
 import DefaultDashboard from '../components/DefaultLayoutDashboard';
+import SingleRoom from '../components/SingleRoom';
 
 const Routes = () => {
   return (
@@ -40,6 +41,7 @@ const Routes = () => {
           <Route exact path='/course/record/:slug' component={CourseRecord} />
           <Route exact path='/room' component={Room} />
           <Route exact path='/seat/record/:slug' component={SeatRecord} />
+          <Route exact path='/room/:slug' component={SingleRoom} />
         </Switch>
       </Container>
       <Footer />

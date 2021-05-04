@@ -23,6 +23,7 @@ import { getRooms, createRoom, assignRoom, clearRoom } from '../actions/room';
 import { getCourses } from '../actions/course';
 import roomValidations from '../validations/room';
 import ClearButton from './common/ClearButton';
+import Popup from '../assets/popup.svg';
 
 const Room = (props) => {
   if (!localStorage.getItem('token')) {
@@ -138,12 +139,7 @@ const Room = (props) => {
   };
 
   const onClickView = (id) => {
-    // To be implemented in the future
-    // props.history.push(`/room/${id}`);
-  };
-
-  const onClickDelete = (id) => {
-    // To be implemented in the future
+    props.history.push(`/room/${id}`);
   };
 
   const { name, capacity } = state;
@@ -330,16 +326,10 @@ const Room = (props) => {
                     <td>{room.status}</td>
                     <td>
                       <Button
-                        className='btn btn-sm m-1'
+                        className='btn btn-sm m-1 btn-light'
                         onClick={() => onClickView(room.id)}
                       >
-                        <i className='fas fa-eye'></i>
-                      </Button>
-                      <Button
-                        className='btn btn-sm m-1'
-                        onClick={() => onClickDelete(room.id)}
-                      >
-                        <i className='fas fa-trash'></i>
+                        <img src={Popup} alt='popup' className='w-25 h-25' />
                       </Button>
                     </td>
                   </tr>

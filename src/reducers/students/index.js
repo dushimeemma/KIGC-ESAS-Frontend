@@ -15,6 +15,7 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case types.GET_STUDENTS:
     case types.SEARCH_STUDENTS:
+    case types.GET_STUDENTS_PER_ROOM:
       return {
         ...state,
         students: action.payload.students,

@@ -19,7 +19,6 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import Sidebar from './Sidebar';
 import { getStudent, updateStudent } from '../actions/students';
-import Student from './Student';
 
 const StudentSingle = (props) => {
   if (!localStorage.getItem('token')) {

@@ -10,23 +10,25 @@ export const getRooms = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (error) {
-      console.log(error)
+    console.log(error);
     dispatch(getErrors(error.response.status, error.response.data));
   }
 };
 
-export const assignRoom = (room_id, course_id)=>async dispatch=>{
+export const assignRoom = (room_id, course_id) => async (dispatch) => {
   try {
-    const res = await setAxios.post('/api/assigned_room/assign', {room_id, course_id});
+    const res = await setAxios.post('/api/assigned_room/assign', {
+      room_id,
+      course_id,
+    });
     dispatch({
       type: types.ASSIGN_ROOM,
-      payload: res.data
-    })
+      payload: res.data,
+    });
   } catch (error) {
     dispatch(getErrors(error.response.status, error.response.data));
   }
-}
-
+};
 
 export const createRoom = (room) => async (dispatch) => {
   try {
@@ -40,16 +42,46 @@ export const createRoom = (room) => async (dispatch) => {
   }
 };
 
-export const clearRoom = () => async dispatch => {
-  try{
+export const clearRoom = () => async (dispatch) => {
+  try {
     const res = await setAxios.get('/api/room/clean/rooms');
     dispatch({
       type: types.CLEAR_ROOM,
-      payload: res.data
-    })
-  }catch(error){
+      payload: res.data,
+    });
+  } catch (error) {
     dispatch(getErrors(error.response.status, error.response.data));
   }
-}
+};
 
+export const getSingleRoom = (id) => async (dispatch) => {
+  dispatch(isLoading());
+  try {
+    const res = await setAxios.get(`/api/room/${id}`);
+    dispatch({
+      type: types.GET_ROOM,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch(getErrors(error.response.status, error.response.data));
+  }
+};
 
+export const deleteRoom = (id) => async (dispatch) => {
+  dispatch(isLoading());
+  try {
+    const res = await setAxios.delete(`/api/room/${id}`);
+    dispatch({
+      type: types.DELETE_ROOM,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch(getErrors(error.response.status, error.response.data));
+  }
+};
+
+export const isLoading = () => {
+  return {
+    type: types.ROOM_LOADING,
+  };
+};
