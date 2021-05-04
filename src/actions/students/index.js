@@ -99,6 +99,19 @@ export const searchStudents = (term) => async (dispatch) => {
   }
 };
 
+export const getStudentsPerRoom = (id) => async (dispatch) => {
+  dispatch(isSearchingStudents());
+  try {
+    const res = await setAxios.get(`/api/student/room/${id}`);
+    dispatch({
+      type: types.GET_STUDENTS_PER_ROOM,
+      payload: res.data,
+    });
+  } catch (error) {
+    dispatch(getErrors(error.response.status, error.response.data));
+  }
+};
+
 export const isSearchingStudents = () => {
   return {
     type: types.IS_SEARCHING_STUDENTS,

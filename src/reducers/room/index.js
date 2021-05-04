@@ -1,10 +1,11 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { types } from "../../actions/room/types";
+import { types } from '../../actions/room/types';
 
 const initialState = {
   rooms: [],
   room: {},
-  msg: "",
+  isLoading: null,
+  msg: '',
   getSuccess: false,
   createSuccess: false,
   assignSuccess: false,
@@ -35,6 +36,24 @@ export default (state = initialState, action) => {
       return {
         ...state,
         msg: action.payload.message,
+      };
+    case types.GET_ROOM:
+      return {
+        ...state,
+        isLoading: false,
+        room: action.payload.room,
+        msg: action.payload.message,
+      };
+    case types.DELETE_ROOM:
+      return {
+        ...state,
+        msg: action.payload.message,
+        isLoading: false,
+      };
+    case types.ROOM_LOADING:
+      return {
+        ...state,
+        isLoading: true,
       };
     default:
       return state;
