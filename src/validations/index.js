@@ -1,14 +1,7 @@
-const validation = (state) => {
-  let errors = {};
-  if (!state.name) {
-    errors.nameErrors = 'Name is required';
-  }
-  if (!state.email) {
-    errors.emailErrors = 'Email is required';
-  }
-  if (!state.password) {
-    errors.passwordErrors = 'Password is required';
-  }
-  return errors;
-};
-export default validation;
+import * as Yup from 'yup';
+
+export const validationSchema = Yup.object().shape({
+  name: Yup.string().required().label('Name'),
+  email: Yup.string().required().label('Email'),
+  password: Yup.string().required().label('Password'),
+});

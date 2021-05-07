@@ -14,12 +14,14 @@ import {
   Label,
   Input,
   Alert,
+  Spinner,
 } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Sidebar from './Sidebar';
 import { getUsers } from '../actions/users';
 import { getRoles, assignRole } from '../actions/roles';
+import Popup from '../assets/popup.svg';
 
 const Dashboard = (props) => {
   if (!localStorage.getItem('token')) {
@@ -28,11 +30,10 @@ const Dashboard = (props) => {
   const dispatch = useDispatch();
   React.useEffect(() => {
     dispatch(getUsers());
-  }, []);
-  React.useEffect(() => {
     dispatch(getRoles());
   }, []);
-  const users = useSelector((state) => state.users.users);
+
+  const { users, isLoading } = useSelector((state) => state.users);
   const roles = useSelector((state) => state.roles.roles);
   const msg = useSelector((state) => state.roles.msg);
   const backErrors = useSelector(
@@ -142,35 +143,55 @@ const Dashboard = (props) => {
       </Modal>
       <Sidebar />
       <Col md='9'>
-        <Container>
-          <h3 className='text-center'>All Users And Roles</h3>
-          <Table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {users.map((user, index) => (
-                <tr key={user.id}>
-                  <td>{index + 1}</td>
-                  <td>{user.name}</td>
-                  <td>{user.email}</td>
-                  <td>{user.Role ? user.Role.name : 'No Role'}</td>
-                  <td>
-                    <Button className='btn btn-sm' onClick={toggle}>
-                      <i className='fas fa-user-edit'></i>
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Container>
+        {isLoading ? (
+          <Container
+            fluid
+            className='d-flex justify-content-center align-items-center'
+          >
+            <Spinner type='grow' color='secondary' size='large' />
+          </Container>
+        ) : (
+          <Container>
+            {users.length ? (
+              <>
+                <h3 className='text-center'>All Users And Roles</h3>
+                <Table>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((user, index) => (
+                      <tr key={user.id}>
+                        <td>{index + 1}</td>
+                        <td>{user.name}</td>
+                        <td>{user.email}</td>
+                        <td>{user.Role ? user.Role.name : 'No Role'}</td>
+                        <td>
+                          <Button
+                            className='btn btn-sm m-1 btn-light'
+                            onClick={toggle}
+                          >
+                            <img
+                              src={Popup}
+                              alt='popup'
+                              className='w-25 h-25'
+                            />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </>
+            ) : null}
+          </Container>
+        )}
       </Col>
     </Row>
   );

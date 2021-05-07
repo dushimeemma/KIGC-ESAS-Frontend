@@ -3,6 +3,7 @@ import setAxios from '../setUpAxios';
 import { getErrors } from '../errors';
 
 export const getUsers = () => async (dispatch) => {
+  dispatch(setUsersLoading());
   try {
     const res = await setAxios.get('/api/user/profile');
     dispatch({
@@ -12,4 +13,10 @@ export const getUsers = () => async (dispatch) => {
   } catch (error) {
     dispatch(getErrors(error.response.status, error.response.data));
   }
+};
+
+export const setUsersLoading = () => {
+  return {
+    type: types.SET_USERS_LOADING,
+  };
 };

@@ -29,6 +29,7 @@ export const assignedStudents = (course_id) => async (dispatch) => {
 };
 
 export const getCourses = () => async (dispatch) => {
+  dispatch(isLoading());
   try {
     const res = await setAxios.get('/api/course');
     dispatch({

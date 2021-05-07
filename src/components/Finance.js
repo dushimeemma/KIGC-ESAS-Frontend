@@ -41,7 +41,7 @@ const Finance = (props) => {
   React.useEffect(() => {
     dispatch(getStudents());
   }, []);
-  const { students, isSearchingStudents } = useSelector(
+  const { students, isSearchingStudents, isLoading } = useSelector(
     (state) => state.students
   );
   const [modal, setModal] = React.useState(false);
@@ -200,51 +200,72 @@ const Finance = (props) => {
             </Formik>
           </Col>
         </Row>
-        <Container>
-          <h3 className='text-center'>All Students Financial Status</h3>
-          <Table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>RegNo</th>
-                <th>Level</th>
-                <th>Course</th>
-                <th>Value</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map((student, index) => (
-                <tr key={student.id}>
-                  <td>{index + 1}</td>
-                  <td>{student.regNo}</td>
-                  <td>{student.level}</td>
-                  <td>
-                    {student.Course ? student.Course.name : 'Record Course'}
-                  </td>
-                  <td>
-                    {student.Finance
-                      ? student.Finance.amount
-                      : 'Record Finance'}
-                    Rwfs
-                  </td>
-                  <td>
-                    {student.Finance ? student.Finance.status : 'No Record'}
-                  </td>
-                  <td>
-                    <Button
-                      className='btn btn-sm m-1 btn-light'
-                      onClick={() => toggle(student.id)}
-                    >
-                      <img src={Popup} alt='popup' className='w-25 h-25' />
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Container>
+        {isLoading ? (
+          <Container
+            fluid
+            className='d-flex justify-content-center align-items-center'
+          >
+            <Spinner type='grow' color='secondary' size='large' />
+          </Container>
+        ) : (
+          <Container>
+            {students.length ? (
+              <>
+                <h3 className='text-center'>All Students Financial Status</h3>
+                <Table>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>RegNo</th>
+                      <th>Level</th>
+                      <th>Course</th>
+                      <th>Value</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {students.map((student, index) => (
+                      <tr key={student.id}>
+                        <td>{index + 1}</td>
+                        <td>{student.regNo}</td>
+                        <td>{student.level}</td>
+                        <td>
+                          {student.Course
+                            ? student.Course.name
+                            : 'Record Course'}
+                        </td>
+                        <td>
+                          {student.Finance
+                            ? student.Finance.amount
+                            : 'Record Finance'}
+                          Rwfs
+                        </td>
+                        <td>
+                          {student.Finance
+                            ? student.Finance.status
+                            : 'No Record'}
+                        </td>
+                        <td>
+                          <Button
+                            className='btn btn-sm m-1 btn-light'
+                            onClick={() => toggle(student.id)}
+                          >
+                            <img
+                              src={Popup}
+                              alt='popup'
+                              className='w-25 h-25'
+                            />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </>
+            ) : null}
+          </Container>
+        )}
       </Col>
     </Row>
   );

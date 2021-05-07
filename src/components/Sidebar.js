@@ -69,6 +69,13 @@ const Sidebar = () => {
             Room
           </NavLink>
         </ListGroupItem>
+        {localStorage.getItem('username') == 'SUPER ADMIN' && (
+          <ListGroupItem className='back-color'>
+            <NavLink href='/dashboard' className='back-color'>
+              Users
+            </NavLink>
+          </ListGroupItem>
+        )}
         {/* <ListGroupItem className='back-color'>
           <NavLink href='/seat' className='back-color'>
             Seat

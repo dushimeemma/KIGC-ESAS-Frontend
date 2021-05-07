@@ -3,6 +3,7 @@ import setAxios from '../setUpAxios';
 import { getErrors } from '../errors';
 
 export const getRoles = () => async (dispatch) => {
+  dispatch(setRoleLoading());
   try {
     const res = await setAxios.get('/api/role/read');
     dispatch({
@@ -75,4 +76,10 @@ export const updateRole = (role, id) => async (dispatch) => {
   } catch (error) {
     dispatch(getErrors(error.response.status, error.response.data));
   }
+};
+
+export const setRoleLoading = () => {
+  return {
+    type: types.SET_ROLES_LOADING,
+  };
 };

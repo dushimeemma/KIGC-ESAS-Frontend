@@ -3,6 +3,7 @@ import setAxios from '../setUpAxios';
 import { getErrors } from '../errors';
 
 export const getRooms = () => async (dispatch) => {
+  dispatch(isLoading());
   try {
     const res = await setAxios.get('/api/room');
     dispatch({

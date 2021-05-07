@@ -21,9 +21,12 @@ const DefaultDashboard = (props) => {
     dispatch(getCountRooms());
     dispatch(getCountCourses());
   }, []);
-  const { numberOfStudents, numberOfRooms, numberOfCourses } = useSelector(
-    (state) => state.count
-  );
+  const {
+    numberOfStudents,
+    numberOfRooms,
+    numberOfCourses,
+    isLoading,
+  } = useSelector((state) => state.count);
 
   const HandleClickUsers = () => {
     setTimeout(() => {
@@ -58,16 +61,19 @@ const DefaultDashboard = (props) => {
           <Container>
             <Row>
               <Card
+                isLoading={isLoading}
                 count={numberOfCourses}
                 text='Courses'
                 onClick={HandleClickUsers}
               />
               <Card
+                isLoading={isLoading}
                 count={numberOfStudents}
                 text='Students'
                 onClick={HandleClickStudents}
               />
               <Card
+                isLoading={isLoading}
                 count={numberOfRooms}
                 text='Rooms'
                 onClick={HandleClickRooms}

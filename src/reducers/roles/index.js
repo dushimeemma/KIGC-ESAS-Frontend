@@ -8,6 +8,7 @@ const initialState = {
   deleteSuccess: false,
   createSuccess: false,
   updateSuccess: false,
+  isLoading: null,
 };
 
 export default (state = initialState, action) => {
@@ -15,6 +16,7 @@ export default (state = initialState, action) => {
     case types.GET_ROLES:
       return {
         ...state,
+        isLoading: false,
         roles: action.payload.roles,
       };
     case types.GET_ROLE:
@@ -46,6 +48,11 @@ export default (state = initialState, action) => {
         ...state,
         msg: action.payload.msg,
         updateSuccess: true,
+      };
+    case types.SET_ROLES_LOADING:
+      return {
+        ...state,
+        isLoading: true,
       };
     default:
       return state;

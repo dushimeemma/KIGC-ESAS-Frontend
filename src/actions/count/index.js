@@ -3,6 +3,7 @@ import setAxios from '../setUpAxios';
 import { getErrors } from '../errors';
 
 export const getCountStudents = () => async (dispatch) => {
+  dispatch(setCountLoading());
   try {
     const res = await setAxios.get('/api/count/students');
     dispatch({
@@ -15,6 +16,7 @@ export const getCountStudents = () => async (dispatch) => {
 };
 
 export const getCountRooms = () => async (dispatch) => {
+  dispatch(setCountLoading());
   try {
     const res = await setAxios.get('/api/count/rooms');
     dispatch({
@@ -27,6 +29,7 @@ export const getCountRooms = () => async (dispatch) => {
 };
 
 export const getCountCourses = () => async (dispatch) => {
+  dispatch(setCountLoading());
   try {
     const res = await setAxios.get('/api/count/courses');
     dispatch({
@@ -36,4 +39,10 @@ export const getCountCourses = () => async (dispatch) => {
   } catch (error) {
     dispatch(getErrors(error.response.status, error.response.data));
   }
+};
+
+export const setCountLoading = () => {
+  return {
+    type: types.SET_COUNT_LOADING,
+  };
 };

@@ -3,6 +3,7 @@ import setAxios from '../setUpAxios';
 import { getErrors } from '../errors';
 
 export const getStudents = () => async (dispatch) => {
+  dispatch(setStudentsLoading());
   try {
     const res = await setAxios.get('/api/student');
     dispatch({
@@ -15,6 +16,7 @@ export const getStudents = () => async (dispatch) => {
 };
 
 export const getStudentsPerDept = (department) => async (dispatch) => {
+  dispatch(setStudentsLoading());
   try {
     const res = await setAxios.post('/api/student/single-class', department);
     dispatch({
@@ -87,6 +89,7 @@ export const deleteStudent = (id) => async (dispatch) => {
 };
 
 export const searchStudents = (term) => async (dispatch) => {
+  dispatch(setStudentsLoading());
   dispatch(isSearchingStudents());
   try {
     const res = await setAxios.get(`/api/student/search/students?term=${term}`);
@@ -115,5 +118,11 @@ export const getStudentsPerRoom = (id) => async (dispatch) => {
 export const isSearchingStudents = () => {
   return {
     type: types.IS_SEARCHING_STUDENTS,
+  };
+};
+
+export const setStudentsLoading = () => {
+  return {
+    type: types.SET_STUDENTS_LOADING,
   };
 };

@@ -32,7 +32,9 @@ const Course = (props) => {
   const backErrors = useSelector(
     (state) => state.errors.msg.error || state.errors.msg.msg
   );
-  const { createSuccess, msg, courses } = useSelector((state) => state.course);
+  const { createSuccess, msg, courses, isLoading } = useSelector(
+    (state) => state.course
+  );
 
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [backErr, setBackErr] = React.useState('');
@@ -219,40 +221,57 @@ const Course = (props) => {
           </Col>
           <Col md='9'></Col>
         </Row>
-        <Container>
-          <h3 className='text-center'>All courses</h3>
-        </Container>
-        <Table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Course Name</th>
-              <th>Course Session</th>
-              <th>Starting Date</th>
-              <th>Ending Date</th>
-              <th>Assign</th>
-            </tr>
-          </thead>
-          <tbody>
-            {courses.map((course, index) => (
-              <tr key={course.id}>
-                <td>{index + 1}</td>
-                <td>{course.name}</td>
-                <td>{course.session || 'N/A'}</td>
-                <td>{course.start_date || 'N/A'}</td>
-                <td>{course.end_date || 'N/A'}</td>
-                <td>
-                  <Button
-                    className='btn btn-sm m-1 btn-light'
-                    onClick={() => onClickView(course.id)}
-                  >
-                    <img src={Popup} alt='assign couse' className='h-25 w-25' />
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        {isLoading ? (
+          <Container
+            fluid
+            className='d-flex justify-content-center align-items-center'
+          >
+            <Spinner type='grow' color='secondary' size='large' />
+          </Container>
+        ) : (
+          <Container>
+            {courses.length ? (
+              <>
+                <h3 className='text-center'>All courses</h3>
+                <Table>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Course Name</th>
+                      <th>Course Session</th>
+                      <th>Starting Date</th>
+                      <th>Ending Date</th>
+                      <th>Assign</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {courses.map((course, index) => (
+                      <tr key={course.id}>
+                        <td>{index + 1}</td>
+                        <td>{course.name}</td>
+                        <td>{course.session || 'N/A'}</td>
+                        <td>{course.start_date || 'N/A'}</td>
+                        <td>{course.end_date || 'N/A'}</td>
+                        <td>
+                          <Button
+                            className='btn btn-sm m-1 btn-light'
+                            onClick={() => onClickView(course.id)}
+                          >
+                            <img
+                              src={Popup}
+                              alt='assign couse'
+                              className='h-25 w-25'
+                            />
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </>
+            ) : null}
+          </Container>
+        )}
       </Col>
       <ClearButton action={onClear} />
     </Row>
