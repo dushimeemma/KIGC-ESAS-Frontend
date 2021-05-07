@@ -9,6 +9,7 @@ const initialState = {
   getSuccess: false,
   createSuccess: false,
   assignSuccess: false,
+  isLoading: null,
 };
 
 export default (state = initialState, action) => {
@@ -16,6 +17,7 @@ export default (state = initialState, action) => {
     case types.GET_ROOMS:
       return {
         ...state,
+        isLoading: false,
         rooms: action.payload.rooms,
         msg: action.payload.message,
       };

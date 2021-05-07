@@ -30,14 +30,23 @@ const Room = (props) => {
     props.history.push('/login');
   }
   const dispatch = useDispatch();
-  const rooms = useSelector((state) => state.rooms.rooms);
-  const backMsg = useSelector((state) => state.rooms.msg);
-  const assignedSuccess = useSelector((state) => state.rooms.assignedSuccess);
+
+  const {
+    rooms,
+    msg: backMsg,
+    assignedSuccess,
+    createSuccess: checkSuccess,
+    isLoading,
+  } = useSelector((state) => state.rooms);
+
+  // const rooms = useSelector((state) => state.rooms.rooms);
+  // const backMsg = useSelector((state) => state.rooms.msg);
+  // const assignedSuccess = useSelector((state) => state.rooms.assignedSuccess);
   const { courses } = useSelector((state) => state.course);
   const backErrors = useSelector(
     (state) => state.errors.msg.error || state.errors.msg.msg
   );
-  const checkSuccess = useSelector((state) => state.rooms.createSuccess);
+  // const checkSuccess = useSelector((state) => state.rooms.createSuccess);
 
   React.useEffect(() => {
     dispatch(getRooms());
@@ -228,38 +237,36 @@ const Room = (props) => {
                 <FormGroup>
                   <Label>Select Room</Label>
                   <Input
-                    type='text'
+                    type='select'
                     name='room_id'
-                    list='rooms'
                     onChange={onAssignedChange}
                     value={assigned.room_id}
-                  />
-                  <datalist id='rooms'>
+                  >
+                    <option>CHOOSE ROOM</option>
                     {rooms.map((room) => (
                       <option key={room.id} value={room.id}>
                         {room.name}
                       </option>
                     ))}
-                  </datalist>
+                  </Input>
                 </FormGroup>
               </Col>
               <Col sm='6'>
                 <FormGroup>
                   <Label>Select Course</Label>
                   <Input
-                    type='text'
+                    type='select'
                     name='course_id'
-                    list='courses'
                     onChange={onAssignedChange}
                     value={assigned.course_id}
-                  />
-                  <datalist id='courses'>
+                  >
+                    <option>CHOOSE COURSE</option>
                     {courses.map((course) => (
                       <option key={course.id} value={course.id}>
                         {course.name}
                       </option>
                     ))}
-                  </datalist>
+                  </Input>
                 </FormGroup>
               </Col>
             </Row>
@@ -292,52 +299,69 @@ const Room = (props) => {
             </Button>
           </Col>
         </Row>
-        <Container>
-          <h3 className='text-center center'>Rooms</h3>
-          {/* {msg && checkDeleteSuccess && (
-            <Alert color="success" className="text-center">
+        {isLoading ? (
+          <Container
+            fluid
+            className='d-flex justify-content-center align-items-center'
+          >
+            <Spinner type='grow' color='secondary' size='large' />
+          </Container>
+        ) : (
+          <Container>
+            {rooms.length ? (
+              <>
+                <h3 className='text-center center'>Rooms</h3>
+                {/* {msg && checkDeleteSuccess && (
+            <Alert color='success' className='text-center'>
               {msg}
             </Alert>
           )} */}
-          {backErr ? (
-            <Alert color='danger' className='text-center'>
-              {backErr}
-            </Alert>
-          ) : (
-            ''
-          )}
-          <Table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Name</th>
-                <th>Capacity</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            {rooms && (
-              <tbody>
-                {rooms.map((room, index) => (
-                  <tr key={room.id}>
-                    <td>{index + 1}</td>
-                    <td>{room.name}</td>
-                    <td>{room.capacity}</td>
-                    <td>{room.status}</td>
-                    <td>
-                      <Button
-                        className='btn btn-sm m-1 btn-light'
-                        onClick={() => onClickView(room.id)}
-                      >
-                        <img src={Popup} alt='popup' className='w-25 h-25' />
-                      </Button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            )}
-          </Table>
-        </Container>
+                {backErr ? (
+                  <Alert color='danger' className='text-center'>
+                    {backErr}
+                  </Alert>
+                ) : (
+                  ''
+                )}
+                <Table>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Capacity</th>
+                      <th>Status</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  {rooms && (
+                    <tbody>
+                      {rooms.map((room, index) => (
+                        <tr key={room.id}>
+                          <td>{index + 1}</td>
+                          <td>{room.name}</td>
+                          <td>{room.capacity}</td>
+                          <td>{room.status}</td>
+                          <td>
+                            <Button
+                              className='btn btn-sm m-1 btn-light'
+                              onClick={() => onClickView(room.id)}
+                            >
+                              <img
+                                src={Popup}
+                                alt='popup'
+                                className='w-25 h-25'
+                              />
+                            </Button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  )}
+                </Table>
+              </>
+            ) : null}
+          </Container>
+        )}
       </Col>
       <ClearButton action={onClear} />
     </Row>

@@ -9,6 +9,7 @@ const initialState = {
   createSuccess: false,
   deleteSuccess: false,
   isSearchingStudents: false,
+  isLoading: null,
 };
 
 export default (state = initialState, action) => {
@@ -18,12 +19,14 @@ export default (state = initialState, action) => {
     case types.GET_STUDENTS_PER_ROOM:
       return {
         ...state,
+        isLoading: false,
         students: action.payload.students,
         isSearchingStudents: false,
       };
     case types.GET_STUDENTS_DEPT:
       return {
         ...state,
+        isLoading: false,
         students: action.payload.students,
       };
     case types.GET_STUDENT:
@@ -58,6 +61,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         isSearchingStudents: true,
+      };
+    case types.SET_STUDENTS_LOADING:
+      return {
+        ...state,
+        isLoading: true,
       };
     default:
       return state;

@@ -292,8 +292,7 @@ const CourseRecord = (props) => {
                           <b>Session:</b> {course.session}
                         </p>
                         <p>
-                          <b>Assigned on</b> :{' '}
-                          {`${course.students_number} Student`}
+                          <b>Assigned on</b> :{`${students.length} Student`}
                         </p>
                       </Col>
                       <Col md='12' lg='6'>

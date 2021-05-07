@@ -115,7 +115,7 @@ const SingleRoom = (props) => {
                   </Button>
                 </Col>
               </Row>
-              {students.length && (
+              {students.length ? (
                 <>
                   <h3 className='text-center'>Assigned Students</h3>
                   <Table>
@@ -154,7 +154,7 @@ const SingleRoom = (props) => {
                     </tbody>
                   </Table>
                 </>
-              )}
+              ) : null}
             </Container>
           )}
         </Col>

@@ -11,27 +11,25 @@ import {
   Spinner,
 } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { Formik } from 'formik';
 
+import { validationSchema } from '../validations/login';
 import { loginUser } from '../actions/auth';
 import Image from './Image';
-import validation from '../validations/login';
 
 const Login = (props) => {
   const dispatch = useDispatch();
   const backErrors = useSelector(
     (state) => state.errors.msg.error || state.errors.msg.msg
   );
-  const backMsg = useSelector((state) => state.auth.msg);
-  const checkIsAuth = useSelector((state) => state.auth.isAuthenticated);
+
+  const { msg: backMsg, isAuthenticated: checkIsAuth } = useSelector(
+    (state) => state.auth
+  );
 
   const [backErrs, setBackErrs] = React.useState('');
   const [msg, setMsg] = React.useState('');
-  const [state, setState] = React.useState({
-    email: '',
-    password: '',
-  });
 
-  const [errors, setErrors] = React.useState({});
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   React.useEffect(() => {
@@ -50,34 +48,21 @@ const Login = (props) => {
     }, 5000);
   }, [backErrors]);
 
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setState({ ...state, [name]: value });
-  };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    setErrors(validation(state));
+  const handleLogin = (values) => {
     setIsSubmitting(true);
+    dispatch(loginUser(values));
   };
-  React.useEffect(() => {
-    if (isSubmitting && Object.keys(errors).length === 0) {
-      dispatch(loginUser(state));
-    }
-  }, [errors]);
+
   React.useEffect(() => {
     if (checkIsAuth) {
       setTimeout(() => {
-        setState({
-          email: '',
-          password: '',
-        });
+        setIsSubmitting(false);
         props.history.push('/default-dashboard');
         window.location.reload(false);
-      }, 5000);
+      }, 500);
     }
   }, [checkIsAuth]);
-  const { email, password } = state;
-  const { emailErrors, passwordErrors } = errors;
+
   return (
     <Row className='main-height'>
       <Image />
@@ -102,47 +87,62 @@ const Login = (props) => {
             ''
           )}
           <hr />
-          <Form onSubmit={onSubmit}>
-            <FormGroup>
-              <Label>Email</Label>
-              <Input
-                type='text'
-                name='email'
-                onChange={onChange}
-                value={email}
-                placeholder='eg: dushimeemma@gmail.com'
-                className={emailErrors ? 'border-danger' : 'border-success'}
-              />
-              {emailErrors ? (
-                <Alert className='alert alert-danger background'>
-                  {emailErrors}
-                </Alert>
-              ) : (
-                ''
-              )}
-            </FormGroup>
-            <FormGroup>
-              <Label>Password</Label>
-              <Input
-                type='password'
-                name='password'
-                onChange={onChange}
-                value={password}
-                placeholder='eg: Password123'
-                className={passwordErrors ? 'border-danger' : 'border-success'}
-              />
-              {passwordErrors ? (
-                <Alert className='alert alert-danger background'>
-                  {passwordErrors}
-                </Alert>
-              ) : (
-                ''
-              )}
-            </FormGroup>
-            <Button className='btn btn-block'>
-              {isSubmitting ? <Spinner color='light' size='sm' /> : 'Login'}
-            </Button>
-          </Form>
+          <Formik
+            initialValues={{ email: '', password: '' }}
+            onSubmit={handleLogin}
+            validationSchema={validationSchema}
+          >
+            {({
+              values,
+              handleChange,
+              handleSubmit,
+              errors,
+              touched,
+              handleBlur,
+            }) => (
+              <Form onSubmit={handleSubmit}>
+                <FormGroup>
+                  <Label>Email</Label>
+                  <Input
+                    type='text'
+                    name='email'
+                    onChange={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                    placeholder='eg: dushimeemma@gmail.com'
+                    className={errors.email && touched.email && 'border-danger'}
+                  />
+                  {errors.email && touched.email && (
+                    <Alert className='alert alert-danger background'>
+                      {errors.email}
+                    </Alert>
+                  )}
+                </FormGroup>
+                <FormGroup>
+                  <Label>Password</Label>
+                  <Input
+                    type='password'
+                    name='password'
+                    onChange={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    value={values.password}
+                    placeholder='eg: Password123'
+                    className={
+                      errors.password && touched.password && 'border-danger'
+                    }
+                  />
+                  {errors.password && touched.password && (
+                    <Alert className='alert alert-danger background'>
+                      {errors.password}
+                    </Alert>
+                  )}
+                </FormGroup>
+                <Button className='btn btn-block'>
+                  {isSubmitting ? <Spinner color='light' size='sm' /> : 'Login'}
+                </Button>
+              </Form>
+            )}
+          </Formik>
         </div>
       </Col>
     </Row>

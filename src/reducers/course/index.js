@@ -35,6 +35,7 @@ export default (state = initialState, action) => {
     case types.GET_COURSES:
       return {
         ...state,
+        isLoading: false,
         msg: action.payload.message,
         courses: action.payload.courses,
       };

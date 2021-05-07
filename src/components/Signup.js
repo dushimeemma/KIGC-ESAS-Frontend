@@ -1,5 +1,5 @@
-import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Row,
   Col,
@@ -10,151 +10,155 @@ import {
   Input,
   Alert,
   Spinner,
-} from "reactstrap";
+} from 'reactstrap';
+import { Formik } from 'formik';
 
-import { createUser } from "../actions/auth";
-import Image from "../components/Image";
-import validation from "../validations";
+import { createUser } from '../actions/auth';
+import Image from '../components/Image';
+import { validationSchema } from '../validations';
 
 const Signup = (props) => {
   const dispatch = useDispatch();
-  const backMsg = useSelector((state) => state.auth.msg);
-  const checkSuccess = useSelector((state) => state.auth.registered);
+
+  const { msg: backMsg, registered: checkSuccess } = useSelector(
+    (state) => state.auth
+  );
+
   const backErrors = useSelector(
     (state) => state.errors.msg.error || state.errors.msg.msg
   );
-  const [backErrs, setBackErrs] = React.useState("");
-  const [msg, setMsg] = React.useState("");
+  const [backErrs, setBackErrs] = React.useState('');
+  const [msg, setMsg] = React.useState('');
   const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [state, setState] = React.useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  const [errors, setErrors] = React.useState({});
 
   React.useEffect(() => {
     setMsg(backMsg);
     setTimeout(() => {
-      setMsg("");
+      setMsg('');
     }, 5000);
   }, [backMsg]);
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setState({ ...state, [name]: value });
-  };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    setErrors(validation(state));
-    setIsSubmitting(true);
-  };
+
   React.useEffect(() => {
     setBackErrs(backErrors);
-    setIsSubmitting(false)
+    setIsSubmitting(false);
     setTimeout(() => {
-      setBackErrs("");
+      setBackErrs('');
     }, 5000);
   }, [backErrors]);
-  React.useEffect(() => {
-    if (isSubmitting && Object.keys(errors).length === 0) {
-      dispatch(createUser(state));
-    }
-  }, [errors]);
+
+  const handleRegister = (values) => {
+    setIsSubmitting(true);
+    dispatch(createUser(values));
+  };
+
   React.useEffect(() => {
     if (checkSuccess) {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
       setTimeout(() => {
-        setState({
-          name: "",
-          email: "",
-          password: "",
-        });
-        props.history.push("/login");
+        props.history.push('/login');
       }, 5000);
     }
   }, [checkSuccess]);
 
-  const { name, email, password } = state;
-  const { nameErrors, emailErrors, passwordErrors } = errors;
   return (
-    <Row className="main-height">
-      <Col md="6" className="">
-        <div className=" border p-2 aside back-color">
-          <h3 className="text-center">
+    <Row className='main-height'>
+      <Col md='6' className=''>
+        <div className=' border p-2 aside back-color'>
+          <h3 className='text-center'>
             Create New Account <br /> To KIGC-ESAS
           </h3>
           {msg ? (
-            <Alert color="success" className="text-center">
+            <Alert color='success' className='text-center'>
               {msg}
             </Alert>
           ) : (
-            ""
+            ''
           )}
           {backErrs ? (
-            <Alert color="danger" className="text-center">
+            <Alert color='danger' className='text-center'>
               {backErrs}
             </Alert>
           ) : (
-            ""
+            ''
           )}
           <hr />
-          <Form onSubmit={onSubmit}>
-            <FormGroup>
-              <Label>Name</Label>
-              <Input
-                type="text"
-                name="name"
-                placeholder="eg: Emma Dushime"
-                onChange={onChange}
-                value={name}
-                className={nameErrors ? "border-danger" : "border-success"}
-              />
-              {nameErrors ? (
-                <Label className="alert alert-danger background">
-                  {nameErrors}
-                </Label>
-              ) : (
-                ""
-              )}
-            </FormGroup>
-            <FormGroup>
-              <Label>Email</Label>
-              <Input
-                type="text"
-                name="email"
-                placeholder="eg: dushimeemma@gmail.com"
-                onChange={onChange}
-                value={email}
-                className={emailErrors ? "border-danger" : "border-success"}
-              />
-              {emailErrors ? (
-                <Label className="alert alert-danger background">
-                  {emailErrors}
-                </Label>
-              ) : (
-                ""
-              )}
-            </FormGroup>
-            <FormGroup>
-              <Label>Password</Label>
-              <Input
-                type="password"
-                name="password"
-                placeholder="eg: Password123"
-                onChange={onChange}
-                value={password}
-                className={passwordErrors ? "border-danger" : "border-success"}
-              />
-              {passwordErrors ? (
-                <Label className="alert alert-danger background">
-                  {passwordErrors}
-                </Label>
-              ) : (
-                ""
-              )}
-            </FormGroup>
-            <Button className="btn btn-block">{isSubmitting ? <Spinner color="light" size="sm"/> : "Register"}</Button>
-          </Form>
+          <Formik
+            initialValues={{ name: '', email: '', password: '' }}
+            onSubmit={handleRegister}
+            validationSchema={validationSchema}
+          >
+            {({
+              values,
+              handleChange,
+              handleSubmit,
+              errors,
+              touched,
+              handleBlur,
+            }) => (
+              <Form onSubmit={handleSubmit}>
+                <FormGroup>
+                  <Label>Name</Label>
+                  <Input
+                    type='text'
+                    name='name'
+                    placeholder='eg: Emma Dushime'
+                    onChange={handleChange('name')}
+                    onBlur={handleBlur('name')}
+                    value={values.name}
+                    className={errors.name && touched.name && 'border-danger'}
+                  />
+                  {errors.name && touched.name && (
+                    <Label className='alert alert-danger background'>
+                      {errors.name}
+                    </Label>
+                  )}
+                </FormGroup>
+                <FormGroup>
+                  <Label>Email</Label>
+                  <Input
+                    type='text'
+                    name='email'
+                    placeholder='eg: dushimeemma@gmail.com'
+                    onChange={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                    className={errors.email && touched.email && 'border-danger'}
+                  />
+                  {errors.email && touched.email && (
+                    <Label className='alert alert-danger background'>
+                      {errors.email}
+                    </Label>
+                  )}
+                </FormGroup>
+                <FormGroup>
+                  <Label>Password</Label>
+                  <Input
+                    type='password'
+                    name='password'
+                    placeholder='eg: Password123'
+                    onChange={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    value={values.password}
+                    className={
+                      errors.password && touched.password && 'border-danger'
+                    }
+                  />
+                  {errors.password && touched.password && (
+                    <Label className='alert alert-danger background'>
+                      {errors.password}
+                    </Label>
+                  )}
+                </FormGroup>
+                <Button className='btn btn-block'>
+                  {isSubmitting ? (
+                    <Spinner color='light' size='sm' />
+                  ) : (
+                    'Register'
+                  )}
+                </Button>
+              </Form>
+            )}
+          </Formik>
         </div>
       </Col>
       <Image />

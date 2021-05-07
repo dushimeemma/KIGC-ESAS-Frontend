@@ -40,15 +40,19 @@ const Student = (props) => {
     props.history.push('/login');
   }
   const dispatch = useDispatch();
-  const students = useSelector((state) => state.students.students);
-  const backMsg = useSelector((state) => state.students.msg);
+
+  const {
+    students,
+    msg: backMsg,
+    createSuccess: checkSuccess,
+    deleteSuccess: checkDeleteSuccess,
+    isLoading,
+  } = useSelector((state) => state.students);
+
   const backErrors = useSelector(
     (state) => state.errors.msg.error || state.errors.msg.msg
   );
-  const checkSuccess = useSelector((state) => state.students.createSuccess);
-  const checkDeleteSuccess = useSelector(
-    (state) => state.students.deleteSuccess
-  );
+
   React.useEffect(() => {
     dispatch(getStudents());
   }, []);
@@ -296,58 +300,72 @@ const Student = (props) => {
             </Formik>
           </Col>
         </Row>
-        <Container>
-          <h3 className='text-center'>All Students</h3>
-          {msg && checkDeleteSuccess && (
-            <Alert color='success' className='text-center'>
-              {msg}
-            </Alert>
-          )}
-          {backErr ? (
-            <Alert color='danger' className='text-center'>
-              {backErr}
-            </Alert>
-          ) : (
-            ''
-          )}
-          <Table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>RegNo.</th>
-                <th>Name</th>
-                <th>Department</th>
-                <th>Level</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {students.map((student, index) => (
-                <tr key={student.id}>
-                  <td>{index + 1}</td>
-                  <td>{student.regNo}</td>
-                  <td>{student.name}</td>
-                  <td>{student.department}</td>
-                  <td>{student.level}</td>
-                  <td>
-                    <Button
-                      className='btn btn-sm m-1'
-                      onClick={() => onClickView(student.id)}
-                    >
-                      <i className='fas fa-eye'></i>
-                    </Button>
-                    <Button
-                      className='btn btn-sm m-1'
-                      onClick={() => onClickDelete(student.id)}
-                    >
-                      <i className='fas fa-trash'></i>
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </Container>
+        {isLoading ? (
+          <Container
+            fluid
+            className='d-flex justify-content-center align-items-center'
+          >
+            <Spinner type='grow' color='secondary' size='large' />
+          </Container>
+        ) : (
+          <Container>
+            {students.length ? (
+              <>
+                <h3 className='text-center'>All Students</h3>
+                {msg && checkDeleteSuccess && (
+                  <Alert color='success' className='text-center'>
+                    {msg}
+                  </Alert>
+                )}
+                {backErr ? (
+                  <Alert color='danger' className='text-center'>
+                    {backErr}
+                  </Alert>
+                ) : (
+                  ''
+                )}
+
+                <Table>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>RegNo.</th>
+                      <th>Name</th>
+                      <th>Department</th>
+                      <th>Level</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {students.map((student, index) => (
+                      <tr key={student.id}>
+                        <td>{index + 1}</td>
+                        <td>{student.regNo}</td>
+                        <td>{student.name}</td>
+                        <td>{student.department}</td>
+                        <td>{student.level}</td>
+                        <td>
+                          <Button
+                            className='btn btn-sm m-1'
+                            onClick={() => onClickView(student.id)}
+                          >
+                            <i className='fas fa-eye'></i>
+                          </Button>
+                          <Button
+                            className='btn btn-sm m-1'
+                            onClick={() => onClickDelete(student.id)}
+                          >
+                            <i className='fas fa-trash'></i>
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              </>
+            ) : null}
+          </Container>
+        )}
       </Col>
       <ClearButton action={onClear} />
     </Row>
