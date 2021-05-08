@@ -17,9 +17,11 @@ import {
   Spinner,
 } from 'reactstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import { Formik } from 'formik';
 
+import { validationSchema } from '../validations/role';
 import Sidebar from './Sidebar';
-import { getUsers } from '../actions/users';
+import { getUsers, getUser } from '../actions/users';
 import { getRoles, assignRole } from '../actions/roles';
 import Popup from '../assets/popup.svg';
 
@@ -33,21 +35,21 @@ const Dashboard = (props) => {
     dispatch(getRoles());
   }, []);
 
-  const { users, isLoading } = useSelector((state) => state.users);
-  const roles = useSelector((state) => state.roles.roles);
-  const msg = useSelector((state) => state.roles.msg);
+  const { users, isLoading, user } = useSelector((state) => state.users);
+  const { roles, assignSuccess: checkSuccess, msg } = useSelector(
+    (state) => state.roles
+  );
+
   const backErrors = useSelector(
     (state) => state.errors.msg.error || state.errors.msg.msg
   );
-  const checkSuccess = useSelector((state) => state.roles.assignSuccess);
+
   const [backErrs, setBackErrs] = React.useState('');
   const [modal, setModal] = React.useState(false);
-  const [state, setState] = React.useState({
-    role: '',
-    email: '',
-  });
+
   const [isSubmitting, setIsSubmmitting] = React.useState(false);
   const [backMsg, setBackMsg] = React.useState('');
+
   React.useEffect(() => {
     setBackErrs(backErrors);
     setTimeout(() => {
@@ -61,32 +63,24 @@ const Dashboard = (props) => {
     }, 5000);
   }, [msg]);
 
-  const onChange = (e) => {
-    const { name, value } = e.target;
-    setState({ ...state, [name]: value });
+  const toggle = (id) => {
+    dispatch(getUser(id));
+    setModal(!modal);
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const handleAssignRole = (values) => {
     setIsSubmmitting(true);
+    dispatch(assignRole(values));
   };
-  React.useEffect(() => {
-    if (isSubmitting) {
-      dispatch(assignRole(state));
-      setTimeout(() => {
-        window.location.reload(false);
-      }, 5000);
-    }
-  }, [isSubmitting]);
+
   React.useEffect(() => {
     if (checkSuccess) {
       setTimeout(() => {
+        setIsSubmmitting(false);
         window.location.reload(false);
       }, 5000);
     }
   }, [checkSuccess]);
-
-  const toggle = () => setModal(!modal);
 
   return (
     <Row className='main-height'>
@@ -108,38 +102,72 @@ const Dashboard = (props) => {
         ) : (
           ''
         )}
-        <Form onSubmit={onSubmit}>
-          <ModalBody>
-            <FormGroup>
-              <Label>Role</Label>
-              <Input type='select' name='role' onChange={onChange}>
-                <option value=''>Select Role</option>
-                {roles.map((role) => (
-                  <option value={role.name} key={role.id}>
-                    {role.name}
-                  </option>
-                ))}
-              </Input>
-            </FormGroup>
-            <FormGroup>
-              <Label>Email</Label>
-              <Input type='select' name='email' onChange={onChange}>
-                <option value=''>Select User Email</option>
-                {users.map((user) => (
-                  <option value={user.email} key={user.id}>
-                    {user.email}
-                  </option>
-                ))}
-              </Input>
-            </FormGroup>
-          </ModalBody>
-          <ModalFooter className='back-color'>
-            <Button color='secondary'>Assign</Button>
-            <Button color='danger' onClick={toggle}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </Form>
+        {Object.keys(user).length ? (
+          <Formik
+            initialValues={{ role: '', email: user.email }}
+            onSubmit={handleAssignRole}
+            validationSchema={validationSchema}
+          >
+            {({
+              values,
+              handleChange,
+              handleSubmit,
+              errors,
+              touched,
+              handleBlur,
+            }) => (
+              <Form onSubmit={handleSubmit}>
+                <ModalBody>
+                  <FormGroup>
+                    <Label>Role</Label>
+                    <Input
+                      type='select'
+                      name='role'
+                      onChange={handleChange('role')}
+                      onBlur={handleBlur('role')}
+                      value={values.role}
+                    >
+                      <option value=''>Select Role</option>
+                      {roles.map((role) => (
+                        <option value={role.name} key={role.id}>
+                          {role.name}
+                        </option>
+                      ))}
+                    </Input>
+                    {touched.role && errors.role && (
+                      <p className='text-danger'>{errors.role}</p>
+                    )}
+                  </FormGroup>
+                  <FormGroup>
+                    <Label>Email</Label>
+                    <Input
+                      type='text'
+                      name='email'
+                      onChange={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      value={values.email}
+                    />
+                    {touched.email && errors.email && (
+                      <p className='text-danger'>{errors.email}</p>
+                    )}
+                  </FormGroup>
+                </ModalBody>
+                <ModalFooter className='back-color'>
+                  <Button color='secondary'>
+                    {isSubmitting ? (
+                      <Spinner color='light' size='sm' />
+                    ) : (
+                      ' Assign'
+                    )}
+                  </Button>
+                  <Button color='danger' onClick={() => setModal(!modal)}>
+                    Cancel
+                  </Button>
+                </ModalFooter>
+              </Form>
+            )}
+          </Formik>
+        ) : null}
       </Modal>
       <Sidebar />
       <Col md='9'>
@@ -175,7 +203,7 @@ const Dashboard = (props) => {
                         <td>
                           <Button
                             className='btn btn-sm m-1 btn-light'
-                            onClick={toggle}
+                            onClick={() => toggle(user.id)}
                           >
                             <img
                               src={Popup}
