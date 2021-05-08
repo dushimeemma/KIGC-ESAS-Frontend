@@ -346,13 +346,13 @@ const Student = (props) => {
                         <td>{student.level}</td>
                         <td>
                           <Button
-                            className='btn btn-sm m-1'
+                            className='btn btn-light btn-sm m-1'
                             onClick={() => onClickView(student.id)}
                           >
                             <i className='fas fa-eye'></i>
                           </Button>
                           <Button
-                            className='btn btn-sm m-1'
+                            className='btn btn-light btn-sm m-1'
                             onClick={() => onClickDelete(student.id)}
                           >
                             <i className='fas fa-trash'></i>

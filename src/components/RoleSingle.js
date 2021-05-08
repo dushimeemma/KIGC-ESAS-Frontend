@@ -155,7 +155,7 @@ const RoleSingle = (props) => {
                 <td>{role.name}</td>
                 <td>{role.description}</td>
                 <td>
-                  <Button className='btn btn-sm m-1' onClick={toggle}>
+                  <Button className='btn btn-light btn-sm m-1' onClick={toggle}>
                     <i className='fas fa-edit'></i>
                   </Button>
                 </td>

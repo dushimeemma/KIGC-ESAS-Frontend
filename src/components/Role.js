@@ -200,13 +200,13 @@ const Role = (props) => {
                     <td>{role.description}</td>
                     <td>
                       <Button
-                        className='btn btn-sm m-1'
+                        className='btn btn-light btn-sm m-1'
                         onClick={() => onClickView(role.id)}
                       >
                         <i className='fas fa-eye'></i>
                       </Button>
                       <Button
-                        className='btn btn-sm m-1'
+                        className='btn btn-light btn-sm m-1'
                         onClick={() => onClickDelete(role.id)}
                       >
                         <i className='fas fa-trash'></i>
