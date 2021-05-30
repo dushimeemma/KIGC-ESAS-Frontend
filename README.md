@@ -5,3 +5,11 @@
 ## Vision
 
 To help schools to allocate students into examination rooms.
+
+### Getting Started
+
+- clone the repo: `git clone https://github.com/dushimeemma/kigc-esas-frontend.git`
+
+- install dependencies `yarn install`
+
+- run the application `yarn start`
