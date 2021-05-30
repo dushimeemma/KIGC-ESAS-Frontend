@@ -126,6 +126,7 @@ const SingleRoom = (props) => {
                         <th>Name</th>
                         <th>Department</th>
                         <th>Level</th>
+                        <th>Course</th>
                         <th>More</th>
                       </tr>
                     </thead>
@@ -137,6 +138,11 @@ const SingleRoom = (props) => {
                           <td>{student.name}</td>
                           <td>{student.department}</td>
                           <td>{student.level}</td>
+                          <td>
+                            {student.Course.name
+                              ? student.Course.name
+                              : 'no course'}
+                          </td>
                           <td>
                             <Button
                               className='btn btn-sm m-1 btn-light'
